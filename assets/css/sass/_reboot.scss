@@ -1,0 +1,88 @@
+* {
+  outline: none !important;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-fill-secondary);
+  border-radius: 5px;
+  border: 1px solid var(--color-fill);
+
+  &:hover {
+    background-color: var(--color-fill-tertiary);
+  }
+}
+
+body {
+  // Cores base
+  --color-fill: #{$white};
+  --color-fill-secondary: #cfcfcf;
+  --color-fill-tertiary: #ababab;
+  --color-fill-fourth: #f1f1f1;
+  --color-theme: #{$color-default};
+  --color-theme-ligthen: #{lighten($color-default, 15%)};
+  --color-theme-darken: #{darken(saturate($color-default, 3%), 10%)};
+  // Bordas
+  --color-border-color: #{$border-color};
+  // Texto
+  --color-txt: #202020;
+  --color-txt-contrast: #717274;
+  // Titulo
+  --color-headline: #{$black};
+  // Botão
+  --color-button-background: var(--color-theme);
+  --color-button-text: #{$white};
+  --color-button-background-hover: var(--color-theme-darken);
+  --color-button-text-hover: #{$white};
+  // Input
+  --color-input-txt: var(--color-txt);
+  --color-input-border-color: #{$border-color};
+  // Navigation
+  --color-nav-fill: var(--color-fill);
+  // Footer
+  --color-fill-footer: #e7e7e7;
+}
+
+body {
+  background-color: var(--color-fill) !important;
+  color: var(--color-txt) !important;
+
+  @include media(sm, max) {
+    font-size: 14px;
+  }
+}
+
+button {
+  border-radius: 0.4em;
+  border: none;
+  font-size: 0.95rem;
+  padding: 0.5em 0.75em;
+}
+
+a,
+button {
+  @extend %transition;
+}
+
+a {
+  color: var(--color-theme);
+}
+
+p {
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--color-headline);
+}

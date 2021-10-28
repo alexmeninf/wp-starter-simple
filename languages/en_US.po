@@ -1,0 +1,86 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: wp-starter-simple\n"
+"POT-Creation-Date: 2021-10-28 10:28-0300\n"
+"PO-Revision-Date: 2021-10-28 10:34-0300\n"
+"Last-Translator: \n"
+"Language-Team: https://github.com/alexmeninf\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.0\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e;esc_attr_e;esc_attr_x\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: assets\n"
+
+#: 404.php:17 inc/theme.php:135 inc/theme.php:574 index.php:17
+msgid "Página não encontrada"
+msgstr "Page not found"
+
+#: 404.php:19 index.php:19
+msgid ""
+"Desculpe, mas parece que a página que você acessou não existe ou pode ter "
+"sido removida."
+msgstr ""
+"Sorry, but it looks like the page you accessed doesn't exist or may have "
+"been removed."
+
+#: 404.php:21 index.php:21
+msgid "Voltar ao Início"
+msgstr "Back to home"
+
+#: footer.php:12
+msgid "Todos os direitos reservados."
+msgstr "All rights reserved."
+
+#: footer.php:16
+msgid "Desenvolvido por"
+msgstr "Developed by"
+
+#: inc/theme.php:119 inc/theme.php:120
+msgid "Opções do site"
+msgstr "Site Options"
+
+#: inc/theme.php:149 inc/theme.php:153 inc/theme.php:156 inc/theme.php:406
+#: inc/theme.php:409 inc/theme.php:412
+msgid "Registros de "
+msgstr "Archives of "
+
+#: inc/theme.php:159
+msgid "Registros do autor"
+msgstr "Author archive"
+
+#: inc/theme.php:162
+msgid "Registros do blog"
+msgstr "Blog archive"
+
+#: inc/theme.php:165
+msgid "Resultados da pesquisa"
+msgstr "Search results"
+
+#: inc/theme.php:170
+msgid "Os melhores produtos para você"
+msgstr "The best products for you"
+
+#: inc/theme.php:257
+msgid "Página anterior"
+msgstr "Previous page"
+
+#: inc/theme.php:295
+msgid "Próxima página"
+msgstr "Next page"
+
+#: inc/theme.php:342
+msgid "Carregando..."
+msgstr "Loading..."
+
+#: inc/theme.php:566
+msgid "Página"
+msgstr "Page"
+
+#: inc/theme.php:570
+msgid "Resultado da pesquisa por"
+msgstr "Search results for"

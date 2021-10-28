@@ -10,23 +10,3 @@
 .text-default {
   color: var(--color-theme) !important;
 }
-
-// Preload
-.preload {
-  align-items: center;
-  background-color: var(--color-fill);
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  left: 0;
-  position: fixed !important;
-  top: 0;
-  width: 100%;
-  z-index: 10000;
-
-  img {
-    user-select: none;
-    pointer-events: unset;
-  }
-}
-

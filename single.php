@@ -10,7 +10,7 @@ if ( have_posts() ) : while ( have_posts() ) : the_post();
 ?>
 
 
-<section class="<?php echo section_class('post-single') ?>">
+<section class="spacing min-vh-100 d-flex align-items-center post-single">
   <div class="container">
     <div class="row">
       <main class="col-12">

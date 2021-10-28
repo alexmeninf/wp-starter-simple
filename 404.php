@@ -8,7 +8,7 @@ if ( ! defined('ABSPATH') )
 get_header(); ?>
 
 
-<div class="<?php echo section_class('page-404') ?>">
+<div class="page-404 spacing min-vh-100 d-flex align-items-center">
 	<div class="container">
 		<div class="row justify-content-center">
 			<div class="col-md-7 col-lg-6 text-center py-5">

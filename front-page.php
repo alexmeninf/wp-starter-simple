@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) )
 get_header(); ?>
 
 
-<section class="<?php echo section_class('', true, false) ?>">
+<section class="spacing">
   <div class="container">
     <div class="row justify-content-center">
       

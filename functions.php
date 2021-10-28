@@ -5,18 +5,8 @@ if ( ! defined( 'ABSPATH' ) )
   exit;
 
 
-/**
- * Definições do tema e funcionalidades 
- */
-
-// Habilitar preload (loading...) nas páginas
-define('THEME_ENABLE_PRELOAD', false);
-
 // Habilitar navbar superior nas páginas
 define('THEME_ENABLE_NAVBAR', true);
-
-// Gerar rel="preload" na requisição das fontes FontAwesome
-define('THEME_ENABLE_PRELOAD_FONT', false);
 
 
 /**

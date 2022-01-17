@@ -94,8 +94,8 @@ add_action( 'wp_enqueue_scripts', 'wc_remove_block_library_css' );
 if( function_exists('acf_add_options_page') ) {
 
 	acf_add_options_page(array(
-		'page_title'  => __('Opções do site', 'menin'),
-		'menu_title'  => __('Opções do site', 'menin'),
+		'page_title'  => __('Opções do site', 'bluelizard'),
+		'menu_title'  => __('Opções do site', 'bluelizard'),
 		'menu_slug'   => 'opcoes',
 		'capability'  => 'edit_posts',
 		'redirect'    => false
@@ -149,13 +149,13 @@ function custom_breadcrumbs() {
 
       if (is_day()) {
         $format_date = (get_bloginfo('lang') == 'pt-BR') ? get_the_time('j/m/Y') : get_the_time('F j, Y');
-        $archive_title = __('Registros de ', 'menin') . $format_date;
+        $archive_title = __('Registros de ', 'bluelizard') . $format_date;
     
       } elseif (is_month()) {
-        $archive_title = __('Registros de ', 'menin') . get_the_time('F, Y');
+        $archive_title = __('Registros de ', 'bluelizard') . get_the_time('F, Y');
     
       } elseif (is_year()) {
-        $archive_title = __('Registros de ', 'menin') . get_the_time('Y');
+        $archive_title = __('Registros de ', 'bluelizard') . get_the_time('Y');
       }    
       
       echo '<li class="item-current item-archive"><span class="bread-current bread-archive">' . $archive_title . '</span></li>';
@@ -309,15 +309,15 @@ function custom_breadcrumbs() {
       echo '<li class="item-current item-current-' . $userdata->user_nicename . '"><span class="bread-current bread-current-' . $userdata->user_nicename . '" title="' . $userdata->display_name . '">' . 'Author: ' . $userdata->display_name . '</span></li>';
     
     } else if (get_query_var('paged')) {
-      echo '<li class="item-current item-current-' . get_query_var('paged') . '"><span class="bread-current bread-current-' . get_query_var('paged') . '" title="' . __('Página', 'menin') . ' ' . get_query_var('paged') . '">' . __('Página', 'menin') . ' ' . get_query_var('paged') . '</span></li>';
+      echo '<li class="item-current item-current-' . get_query_var('paged') . '"><span class="bread-current bread-current-' . get_query_var('paged') . '" title="' . __('Página', 'bluelizard') . ' ' . get_query_var('paged') . '">' . __('Página', 'bluelizard') . ' ' . get_query_var('paged') . '</span></li>';
     
     } else if (is_search()) {
       // Página Search
-      echo '<li class="item-current item-current-' . get_search_query() . '"><span class="bread-current bread-current-' . get_search_query() . '" title="'.__('Resultado da pesquisa por', 'menin').': ' . get_search_query() . '">'.__('Resultado da pesquisa por', 'menin').': ' . get_search_query() . '</span></li>';
+      echo '<li class="item-current item-current-' . get_search_query() . '"><span class="bread-current bread-current-' . get_search_query() . '" title="'.__('Resultado da pesquisa por', 'bluelizard').': ' . get_search_query() . '">'.__('Resultado da pesquisa por', 'bluelizard').': ' . get_search_query() . '</span></li>';
     
     } elseif (is_404()) {
       // Pagina 404
-      echo '<li>' . __('Página não encontrada', 'menin') . '</li>';
+      echo '<li>' . __('Página não encontrada', 'bluelizard') . '</li>';
     }
 
     echo '</ul>';
@@ -332,8 +332,8 @@ function custom_breadcrumbs() {
  * Suporte para mudança de lingua do tema.
  * 
  */
-add_action( 'after_setup_theme', 'menin_setup_lang' );
+add_action( 'after_setup_theme', 'bluelizard_setup_lang' );
 
-function menin_setup_lang() {
-  load_theme_textdomain( 'menin', get_template_directory() . '/languages' );
+function bluelizard_setup_lang() {
+  load_theme_textdomain( 'bluelizard', get_template_directory() . '/languages' );
 }

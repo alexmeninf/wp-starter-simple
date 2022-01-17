@@ -1,6 +1,6 @@
 # WP Starter Theme Simple v1.0
 
-Author: Alexandre Menin
+Author: bluelizard
 GitHub Plugin URI: [https://github.com/alexmeninf/wp-starter-simple]( "https://github.com/alexmeninf/wp-starter-simple")
 
 **en-US**

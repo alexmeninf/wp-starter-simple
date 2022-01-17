@@ -9,6 +9,10 @@ if ( ! defined('ABSPATH') )
   <div class="container">
     <div class="row">
       <div class="col-lg-6 text-center text-lg-start">
+        <p class="policy-links mb-3 mb-lg-0">
+          <a href="<?php echo get_privacy_policy_url() ?>">Política de privacidade</a>
+          <a href="<?php echo get_permalink('termos-de-uso') ?>">Termos de Uso</a>
+        </p>
         <p>&copy; <?= date('Y') . ' ' . get_bloginfo('name') ?>. <?php _e('Todos os direitos reservados.', 'bluelizard') ?></p>
       </div>
 

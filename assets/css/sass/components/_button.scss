@@ -18,7 +18,7 @@
     margin-right: 10px;
   }
 
-  @include button(var(--color-button-background), var(--color-button-text), var(--color-button-background-hover), var(--color-button-text));
+  @include button(var(--color-button-background), var(--color-button-text), var(--color-button-background), var(--color-button-background-hover), var(--color-button-text), var(--color-button-background-hover));
 }
 
 .btn-small {
@@ -27,5 +27,5 @@
 
 .btn-theme-inverse {
   border: 1px solid;
-  @include button(transparent, var(--color-button-background), var(--color-button-background), var(--color-button-text));
+  @include button(transparent, var(--color-button-background), var(--color-button-background), var(--color-button-background), var(--color-button-text), var(--color-button-background));
 }

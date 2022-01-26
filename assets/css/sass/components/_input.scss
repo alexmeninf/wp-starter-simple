@@ -64,8 +64,8 @@ textarea {
     &:-webkit-autofill:hover,
     &:-webkit-autofill:focus,
     &:-webkit-autofill:active {
-      -webkit-box-shadow: 0 0 0px 1000px var(--color-fill) inset !important;
-      -webkit-text-fill-color: var(--color-input-txt) !important;
+      -webkit-box-shadow: 0 0 0px 1000px #344e76 inset !important;
+      -webkit-text-fill-color: #fff !important;
     }
 
     // Placeholder
@@ -175,7 +175,7 @@ textarea {
   input:not([type="radio"]):not([type="checkbox"]),
   select,
   textarea {
-    background-color: rgba(213, 213, 213, 0.25);
+    background-color: rgb(54 81 124 / 91%);
     border-color: transparent;
     backdrop-filter: blur(16px) saturate(130%);
     -webkit-backdrop-filter: blur(16px) saturate(130%);
@@ -203,6 +203,14 @@ textarea {
   select,
   .txt {
     color: $white !important;
+  }
+
+  option {
+    color: $white;
+  }
+
+  option[disabled] {
+    color: rgba($white, 0.5);
   }
 
   &:not(.translucent-form) {

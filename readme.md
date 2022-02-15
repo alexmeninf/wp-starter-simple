@@ -1,7 +1,7 @@
-# WP Starter Theme Simple v1.0
+# WP Starter Theme Simple v1.1
 
-Author: bluelizard
-GitHub Plugin URI: [https://github.com/alexmeninf/wp-starter-simple]( "https://github.com/alexmeninf/wp-starter-simple")
+Author: Alexandre Menin
+GitHub Plugin URI: [https://github.com/alexmeninf/wp-starter-theme]( "https://github.com/alexmeninf/wp-starter-theme")
 
 **en-US**
 
@@ -20,8 +20,8 @@ GitHub Plugin URI: [https://github.com/alexmeninf/wp-starter-simple]( "https://g
 Opções de plugins para baixar para o seu tema. Coloque em **assets/plugins**
 
 - [jQuery](https://jquery.com/) - v3.6.0
-- [Popper](https://popper.js.org/) - v2.5.4
-- [Bootstrap](https://getbootstrap.com/) - v5.1.1
+- [Popper](https://popper.js.org/) - v2.10.2
+- [Bootstrap](https://getbootstrap.com/) - v5.1.3
 - [Owl Carousel](https://owlcarousel2.github.io/OwlCarousel2/) - v2.3.4
 - [Font Awesome Pro](https://fontawesome.com) - v5.14.0
 - [LightGallery](http://sachinchoolur.github.io/lightGallery/) - v1.6.12

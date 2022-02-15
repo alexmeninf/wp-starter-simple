@@ -1,4 +1,48 @@
-// Espaço entre as sessões
+body {
+  // Cores base
+  --color-fill: #{$white};
+  --color-fill-secondary: #cfcfcf;
+  --color-fill-tertiary: #ababab;
+  --color-fill-fourth: #f1f1f1;
+  --color-theme: #{$color-default};
+  --color-theme-ligthen: #{lighten($color-default, 15%)};
+  --color-theme-darken: #{darken(saturate($color-default, 3%), 10%)};
+  // Bordas
+  --color-border-color: #{$border-color};
+  // Texto
+  --color-txt: #202020;
+  --color-txt-contrast: #717274;
+  // Titulo
+  --color-headline: #{$black};
+  // Botão
+  --color-button-background: var(--color-theme);
+  --color-button-text: #{$white};
+  --color-button-background-hover: var(--color-theme-darken);
+  --color-button-text-hover: #{$white};
+  // Input
+  --color-input-txt: var(--color-txt);
+  --color-input-border-color: #{$border-color};
+  // Navigation
+  --color-nav-fill: var(--color-fill);
+  // Sidebar
+  --color-fill-sidebar: #{$white};
+  --color-fill-sidebar-border-color: var(--color-border-color);
+  --color-fill-sidebar-input: #{$white};
+  // Footer
+  --color-fill-footer: #e7e7e7;
+  // Header height
+  --header-height: 74px;
+
+  @include media(xl) {
+    --header-height: 79px;
+  }
+}
+
+body {
+  background-color: var(--color-fill) !important;
+  color: var(--color-txt) !important;
+}
+
 .spacing {
   padding: ($default-spacing-y / 2) $default-spacing-x;
 

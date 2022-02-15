@@ -26,3 +26,24 @@
     }
   }
 }
+
+.policy-links {
+  @include media(lg, max) {
+    margin-bottom: 25px !important;
+  }
+
+  a {
+    display: inline-block;
+    font-weight: 600;
+    font-size: 12px;
+
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:not(:last-child) {
+      margin-right: 0.75rem;
+    }
+  }
+}

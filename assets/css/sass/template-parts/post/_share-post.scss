@@ -1,0 +1,66 @@
+.share-post {
+
+	ul {
+		display: flex;
+		flex-wrap: wrap;
+		list-style: none;
+		align-items: center;
+		margin: 0;
+		padding: 0;
+
+		li {
+			&:not(:last-child) {
+				margin-right: 10px;
+			}
+
+			>a {
+				border-style: solid;
+				border-width: 1px;
+				cursor: pointer;
+				border-radius: 50%;
+				display: block;
+				font-size: 1em;
+				height: 2.25rem;
+				line-height: 2.25rem;
+				text-align: center;
+				width: 2.25rem;
+				@extend %transition;
+
+				&:hover {
+					transform: translateY(-7px);
+					@extend %transition;
+				}
+			}
+		}
+	}
+}
+
+.btn-facebook {
+	@include button(#036be4, $white, #036be4, darken(#036be4, 10%), $white, darken(#036be4, 10%));
+}
+
+.btn-twitter {
+	@include button(#55acee, $white, #55acee, darken(#55acee, 10%), $white, darken(#55acee, 10%));
+}
+
+.btn-linkedin {
+	@include button(#007bb5, $white, #007bb5, darken(#007bb5, 10%), $white, darken(#007bb5, 10%));
+}
+
+.btn-whatsapp {
+	@include button(#25D366, $white, #25D366, darken(#25D366, 10%), $white, darken(#25D366, 10%));
+}
+
+.btn-telegram {
+	@include button(#0088cc, $white, #0088cc, darken(#0088cc, 10%), $white, darken(#0088cc, 10%));
+}
+
+.share-default {
+	@include button(
+		rgba(243,244,246), 
+		rgba(107,114,128), 
+		rgba(243,244,246), 
+		rgba(229,231,235), 
+		rgba(107,114,128), 
+		rgba(229,231,235));
+}

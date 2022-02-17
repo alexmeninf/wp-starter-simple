@@ -1,9 +1,11 @@
 // @import "compass/css3";
-@import "../../plugins/bootstrap/sass/functions";
-@import "../../plugins/bootstrap/sass/variables";
+@import "../../../assets/plugins/bootstrap/sass/functions";
+@import "../../../assets/plugins/bootstrap/sass/variables";
 @import "variables";
 
 @import "reboot";
 @import "global";
+@import "plugins";
+@import "utilities";
 @import "components";
 @import "template_parts";

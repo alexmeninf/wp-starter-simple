@@ -5,8 +5,18 @@ if ( ! defined( 'ABSPATH' ) )
   exit;
 
 
+/**
+ * Definições do tema e funcionalidades 
+ */
+
+// Habilitar preload nas páginas
+define('THEME_ENABLE_PRELOAD', false);
+
 // Habilitar navbar superior nas páginas
 define('THEME_ENABLE_NAVBAR', true);
+
+// Gerar meta preload na requisição das fontes do tema
+define('THEME_ENABLE_PRELOAD_FONT', false);
 
 // Remover suporte e aba de comentários no painel do admin
 define('WP_REMOVE_SUPPORT_COMMENTS', true);
@@ -31,7 +41,7 @@ new_css('main-default', 'assets/css/main.css');
  * Use CSS Default
  */
 use_css('bootstrap');
-// use_css('fontawesome-default');
+use_css('fontawesome-default');
 use_css('style-theme');
 use_css('main-default');
 

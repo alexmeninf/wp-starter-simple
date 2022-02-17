@@ -1,7 +1,7 @@
 .navigation {
   background-color: var(--color-nav-fill);
   border-bottom: 1px solid var(--color-border-color);
-  padding: 30px 0;
+  padding: calc(var(--header-height) + 34px) 0 34px;
 
   h1 {
     font-size: 23px;

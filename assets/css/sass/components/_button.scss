@@ -26,7 +26,14 @@
     }
   }
 
-  @include button(var(--color-button-background), var(--color-button-text), var(--color-button-background), var(--color-button-background-hover), var(--color-button-text), var(--color-button-background-hover));
+  @include button(
+    var(--color-button-background), 
+    var(--color-button-text), 
+    var(--color-button-background), 
+    var(--color-button-background-hover), 
+    var(--color-button-text-hover), 
+    var(--color-button-background-hover)
+  );
 }
 
 .btn-small {
@@ -39,5 +46,12 @@
 
 .btn-theme-inverse {
   border: 1px solid;
-  @include button(transparent, var(--color-button-background), var(--color-button-background), var(--color-button-background), var(--color-button-text), var(--color-button-background));
+  @include button(
+    transparent, 
+    var(--color-button-background), 
+    var(--color-button-background), 
+    var(--color-button-background), 
+    var(--color-button-text), 
+    var(--color-button-background)
+  );
 }

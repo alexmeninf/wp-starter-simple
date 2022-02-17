@@ -8,7 +8,7 @@ if ( ! defined('ABSPATH') )
 get_header(); ?>
 
 
-<div class="page-404 spacing min-vh-100 d-flex align-items-center">
+<div class="<?php echo section_class('page-404') ?>">
 	<div class="container">
 		<div class="row justify-content-center">
 			<div class="col-md-7 col-lg-6 text-center py-5">
@@ -18,7 +18,14 @@ get_header(); ?>
 				<!-- Description -->
 				<p class="wow fadeInUp" data-wow-delay=".3s"><?php _e('Desculpe, mas parece que a página que você acessou não existe ou pode ter sido removida.', 'startertheme') ?></p>
 				<!-- Button -->
-				<a href="<?php bloginfo('url') ?>" class="btn-theme wow fadeInUp" data-wow-delay=".4s"><?php _e('Voltar ao Início', 'startertheme') ?></a>
+				<a 
+					href="<?php bloginfo('url') ?>" 
+					class="btn-theme wow fadeInUp" 
+					data-wow-delay=".4s"
+					style="--btn-border-radius: 50rem"
+					>
+					<?php _e('Voltar ao Início', 'startertheme') ?>
+				</a>
 			</div>
 		</div>
 	</div>

@@ -1,0 +1,178 @@
+$margin-y-header: 5px;
+
+.fixed-header {
+  background: rgba(255, 255, 255, 0.702);
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+  align-items: center;
+  height: auto;
+  left: 0;
+  padding: 0.6rem 15px;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  user-select: none;
+  @extend %transition;
+
+  &.hide {
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .wrap {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    max-width: 1170px;
+    align-items: center;
+  }
+
+  &.new-bg {
+    .btn-menu {
+      background-color: rgba(0, 0, 0, 0.2);
+
+      &:hover {
+        background-color: rgba(191, 191, 191, 0.075);
+      }
+    }
+  }
+
+  .img-brand {
+    display: inline-block;
+    margin: $margin-y-header 0;
+
+    img {
+      height: 50px;
+      
+      @include media(md, max) {
+        height: 42px;
+      }
+    }
+  }
+
+  .btn-menu {
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.471);
+    border-radius: 50%;
+    border: none;
+    color: $white;
+    display: flex;
+    height: 45px;
+    justify-content: center;
+    margin: $margin-y-header 0;
+    outline: none;
+    text-decoration: none;
+    width: 45px;
+
+    &:hover {
+      background-color: rgba(19, 20, 19, 0.267);
+    }
+  }
+
+  .nav-list {
+    display: none;
+
+    // First Parent
+    ul {
+      margin: 0;
+      padding: 0;
+      display: block;
+	    position: relative;
+
+      li {
+        display: inline-block;
+        position: relative;
+	      white-space: nowrap;
+
+        a {
+          color: $black;
+          display: block;
+          padding: 10px;
+          font-size: 14px;
+          text-decoration: none;
+          transition: .2s all;
+          
+          span {
+            @extend %ellipsis;
+          }
+        }
+      }
+    }
+
+    // children
+    .children {
+      background-color: rgba($white, 0.85);
+      box-shadow: 0 3px 5px rgba($black, 0.1);
+      margin-left: 10px;
+
+      li {
+        display: block;
+
+        a {
+          display: block;
+          padding: 1em;
+        }
+      }
+    }
+
+    // Hover e link ativado
+    li:hover > a,
+    li.nav-active > a {
+      color: $white;
+      background: var(--color-theme);
+    }
+
+    ul ul {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 1001;
+    }
+  
+    ul ul ul {
+      top: 5px;
+      left: 95%;
+      z-index: 1002;
+    }
+  
+    ul ul ul ul {
+      z-index: 1003;
+    }
+  
+    ul ul ul ul ul {
+      z-index: 1004;
+    }
+  
+    ul ul li.nav-left > ul {
+      left: auto;
+      right: 95%;
+    }
+  }
+}
+
+@each $prefix, $breakpoint in $grid-breakpoints {
+  .expand-#{$prefix} {
+    @include media($breakpoint) {
+      .btn-menu {
+        display: none;
+      }
+
+      .nav-list {
+        display: block;
+      }
+    }
+  }
+}
+
+
+// submenu
+.nav-no-js .nav-list li:hover > ul {
+	display: block;
+}
+
+.nav-lock-scroll {
+  overflow: hidden;
+}

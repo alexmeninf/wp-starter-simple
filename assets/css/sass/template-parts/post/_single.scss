@@ -1,0 +1,139 @@
+.post-single {
+  .title-post {
+    color: var(--color-headline);
+    font-size: calc(1.7em + 1.08vw);
+    line-height: 1.2;
+    font-weight: 700;
+    margin-top: 1.5rem;
+    max-width: 56rem;
+  }
+
+  .excerpt-post {
+    color: var(--color-txt-contrast);
+    font-size: 18px;
+    line-height: 28px;
+    margin-top: 1.4rem;
+    display: block;
+    padding-bottom: 1rem;
+  }
+
+  .blog-postmeta {
+    color: var(--color-txt-neutral);
+    font-size: 0.875rem;
+  }
+
+  .divisor-share {
+    height: 1.5rem;
+    border-left: 1px solid var(--color-border-color);
+  }
+
+  .single-image {
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+
+    img {
+      border-radius: 0.75rem;
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .published-by {
+    text-transform: uppercase;
+    letter-spacing: .05em;
+  }
+}
+
+.divider-border {
+  width: 100%;
+  border-bottom: 1px solid var(--color-border-color);
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+// Conteúdo do post
+.content-single {
+  p,
+  div,
+  table,
+  img,
+  figure,
+  ul {
+    &:not(:last-child) {
+      margin-bottom: 1.5rem;
+    }
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+
+  li:not(:last-child) {
+    margin-bottom: 1.5rem;
+  }
+
+  p,
+  li {
+    font-size: clamp(1rem, calc(0.85rem + 0.75vw), 1.25rem);
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+    @extend %transition;
+
+    &:active {
+      transform: scale(0.97);
+    }
+  }
+
+  figure {
+    img {
+      margin-bottom: 0 !important;
+    }
+
+    figcaption {
+      font-size: 80%;
+      color: var(--color-txt-contrast);
+    }
+  }
+}
+
+// Comentários
+.comments {
+  border-top: 1px solid var(--color-border-color);
+  padding-top: ($default-spacing-y / 4);
+  margin-top: -1px;
+
+  h2 {
+    font-size: 1.5em;
+  }
+}
+
+.max-w-screen-md {
+  max-width: 768px;
+}
+
+// Widgets
+.share-post,
+.single-tags {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+
+  @include media(sm) {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  span {
+    color: var(--color-txt-contrast);
+    font-size: 1.25em;
+    font-weight: 600;
+
+    @include media(sm, max) {
+      margin-bottom: 0.5em;
+    }
+  }
+}

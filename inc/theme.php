@@ -7,11 +7,12 @@ if ( ! defined( 'ABSPATH' ) )
 * Make theme available for translation.
 * Translations can be filed in the /languages/ directory.
 */
-add_action( 'after_setup_theme', 'menin_setup_lang' );
+add_action( 'after_setup_theme', 'theme_setup_lang' );
 
-function menin_setup_lang() {
+function theme_setup_lang() {
   load_theme_textdomain( 'startertheme', get_template_directory() . '/languages' );
 }
+
 
 /**
  * Add HTML5 theme support.
@@ -28,6 +29,7 @@ function wp_after_setup_theme() {
     );
 }
 add_action( 'after_setup_theme', 'wp_after_setup_theme' );
+
 
 /**
  * Add theme support for selective refresh for widgets.
@@ -53,6 +55,28 @@ register_nav_menus(
  * Vulnerabilidade que mostra a versão do WP
  */
 remove_action('wp_head', 'wp_generator');
+
+
+/**
+ * enable_preload_fonts
+ *
+ * @return void
+ */
+function enable_preload_fonts() {
+
+  if (THEME_ENABLE_PRELOAD_FONT === true) : ?>
+
+    <link rel="preload" crossorigin="anonymous" href="<?= THEMEROOT ?>/assets/plugins/fontawesome/webfonts/fa-regular-400.woff2" as="font">
+    <link rel="preload" crossorigin="anonymous" href="<?= THEMEROOT ?>/assets/plugins/fontawesome/webfonts/fa-duotone-900.woff2" as="font">
+    <link rel="preload" crossorigin="anonymous" href="<?= THEMEROOT ?>/assets/plugins/fontawesome/webfonts/fa-light-300.woff2" as="font">
+    <link rel="preload" crossorigin="anonymous" href="<?= THEMEROOT ?>/assets/plugins/fontawesome/webfonts/fa-brands-400.woff2" as="font">
+
+  <?php
+  endif;
+}
+
+add_action('wp_head', 'enable_preload_fonts', 2);
+
 
 
 /**
@@ -109,7 +133,7 @@ add_action('login_enqueue_scripts', 'wp_custom_logo_in_login');
  * remove some styles
  */
 function wc_remove_block_library_css(){
-	if (!is_admin() && !is_single()) {
+	if ( is_page_template() || is_front_page() ) {
 		wp_dequeue_style( 'wc-block-style' );
 		wp_dequeue_style( 'wp-block-library' );
 	}
@@ -134,6 +158,278 @@ if( function_exists('acf_add_options_page') ) {
 
 
 /**
+ * Show the page name
+ */
+function the_title_page() {
+  $lang = get_bloginfo("language");
+
+  if (is_404()) {
+    echo __('Página não encontrada', 'startertheme');
+
+  } elseif (is_tag()) {
+    single_tag_title();
+
+  } elseif (is_category()) {
+    single_cat_title();
+    
+  } elseif (is_tax()) {
+    $term = get_term_by('slug', get_query_var('term'), get_query_var('taxonomy'));
+    echo $term->name;
+
+  } elseif (is_day()) {
+    $date = ($lang == 'pt-BR') ? get_the_time('j \d\e F \d\e Y') : get_the_time('F j, Y');
+    echo __('Registros de ', 'startertheme') . $date;
+
+  } elseif (is_month()) {
+    $date = ($lang == 'pt-BR') ? get_the_time('F \d\e Y') : get_the_time('F, Y');
+    echo __('Registros de ', 'startertheme') . $date;
+
+  } elseif (is_year()) {
+    echo __('Registros de ', 'startertheme') . get_the_time('Y');
+
+  } elseif (is_author()) {
+    echo __('Registros do autor', 'startertheme');
+
+  } elseif (isset($_GET['p']) && !empty($_GET['p'])) {
+    echo __('Registros do blog', 'startertheme');
+
+  } elseif (is_search()) {
+    echo __('Resultados da pesquisa', 'startertheme');
+
+  } else {
+    if (class_exists('WooCommerce')) {
+      if (is_shop()) {
+        echo __('Os melhores produtos para você', 'startertheme');
+      } else {
+        the_title();
+      }
+    } else {
+      echo wp_trim_words(get_the_title(), 6, '...');
+    }
+  }
+}
+
+
+/**
+ * Support Facebook comments
+ */
+function support_comments_facebook($url = '') {
+	if ($url == '') {
+		$url = esc_url( get_permalink() );
+	} ?>
+
+  <style>
+    .fb_iframe_widget_fluid_desktop iframe { width: 100% !important; }
+    .face-link {font-size: 14px}
+    .face-link a {color: var(--bs-primary); }
+  </style>
+
+  <?php if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPhone') || strstr($_SERVER['HTTP_USER_AGENT'], 'iPad') || strstr($_SERVER['HTTP_USER_AGENT'], 'Mac')) : ?>
+    <p class="ms-2 face-link">
+      <i class="fab fa-facebook me-1"></i> 
+      <?php _e('Não consegue comentar?', 'startertheme') ?> 
+      <?php _e('<a href="https://facebook.com/home.php" target="_blank" rel="noreferrer noopener" title="Conecte ao facebook" class="text-decoration-none">Conecte à sua conta do Facebook</a> em outra página e volte.', 'startertheme') ?>
+    </p>
+  <?php endif; ?>
+
+  <div class="comment-box">
+    <div class="fb-comments" data-order-by="reverse_time" data-href="<?php echo $url ?>" data-width="100%" data-numposts="5"></div>
+  </div>  
+  
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v13.0" nonce="lkGf2c72"></script>
+  
+  <?php
+}
+
+
+/**
+ * get_pagination
+ * 
+ * @version 1.1
+ *
+ * @param  integer $current_page
+ * @param  integer $pages_count
+ * @param  integer $maxLinks
+ * 
+ * @return mixed
+ */
+function get_pagination($current_page, $pages_count, $maxLinks = 2) {
+  wp_reset_query();
+
+  $args = "?";
+  $firstRun = true;
+
+  if (class_exists('WooCommerce')) :
+    foreach ($_GET as $key => $val) {
+      // Remove duplicate 'pg' parameter
+      $check_pg = ('pg' != $key);
+
+      if ($key != $parameter) {
+        if (!$firstRun && $check_pg) {
+          $args .= "&";
+        } else {
+          $firstRun = false;
+        }
+
+        if ($check_pg) {
+          $args .= $key . "=" . $val;
+        }
+      }
+    }
+  endif;
+
+  if (is_search()) {
+    $args .= 's=' . get_search_query();
+    $url = get_bloginfo('url');
+
+  } elseif (is_category()) {
+    $url = get_category_link(get_queried_object()->term_id);
+
+  } elseif (is_tax()) {
+    $url = get_term_link(get_queried_object()->term_id);
+
+  } elseif (is_tag()) {
+    $url = get_tag_link(get_queried_object()->term_id);
+
+  } elseif (is_day()) {
+    $url = get_day_link(get_the_time('Y'), get_the_time('m'), get_the_time('d'));
+
+  } elseif (is_month()) {
+    $url = get_month_link(get_the_time('Y'), get_the_time('m'));
+
+  } elseif (is_year()) {
+    $url = get_year_link(get_the_time('Y'));
+
+  } elseif (is_author()) {
+    $url = get_author_posts_url(get_queried_object()->term_id);
+
+  } else {
+    $url  = get_the_permalink(get_the_ID());
+  }
+
+  $url = esc_url($url) . $args;
+
+  if ($pages_count > 0) : ?>
+
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+        <?php
+        // Check if the first page 
+        $disable_link = ($current_page == 1) ? 'disabled' : '';
+
+        echo '<li class="page-item">';
+        echo '<a class="page-link" aria-label="Previous" title="' . __('Página anterior', 'startertheme') . '" ' . $disable_link . ' href="' . $url . '&pg=1"><span>&laquo;</span></a>';
+        echo '</li>';
+
+        // Previous pages
+        for ($i = $current_page - $maxLinks; $i <= $current_page - 1; $i++) :
+          if ($i >= 1) :
+            echo '<li>';
+            echo '<a class="page-link" href="' . $url . '&pg=' . $i . '">' . $i . '</a>';
+            echo '</li>';
+          endif;
+        endfor;
+
+        // Current page
+        echo '<li class="page-item active"><a class="page-link" href="' . $url . '&pg=' . $current_page . '"> ' . $current_page . '</a></li>';
+
+        // Next pages        
+        $displaying_the_last = false;
+
+        for ($i = $current_page + 1; $i <= $current_page + $maxLinks; $i++) :
+          if ($i <= $pages_count) :
+            echo '<li class="page-item">';
+            echo '<a class="page-link" href="' . $url . '&pg=' . $i . '">' . $i . '</a>';
+            echo '</li>';
+          endif;
+
+          // check if the last page is shown
+          if ($i == $pages_count - 1 || $i == $pages_count) $displaying_the_last = true;
+        endfor;
+
+        // Show the last page
+        if ($current_page != $pages_count && !$displaying_the_last) :
+          echo '<li class="page-item"><a class="page-link" disabled>...</a></li>';
+          echo '<li class="page-item">';
+          echo '<a class="page-link" href="' . $url . '&pg=' . $pages_count . '">' . $pages_count . '</a>';
+          echo '</li>';
+        endif;
+
+        // Check if the last page 
+        $disable_link = ($current_page == $pages_count) ? 'disabled' : 'title="' . __('Próxima página', 'startertheme') . '"';
+
+        echo '<li class="page-item">';
+        echo '<a class="page-link" aria-label="Next" ' . $disable_link . ' href="' . (($current_page != $pages_count) ? ($url . '&pg=' . ($current_page + 1)) : '') . '"><span>&raquo;</span></a>';
+        echo '</li>';
+        ?>
+      </ul>
+    </nav>
+  <?php endif;
+}
+
+
+/**
+ * section_class
+ *
+ * @param  string $class Adicione classes na sessão principal
+ * @param  boolean $enable_default Exiba as classes padrão para cada sessão
+ * @param  boolean $full_screen Habilitar sessão com altura máxima do viewport
+ * 
+ * @return string
+ */
+function section_class($class = '', $enable_default = true, $full_screen = true) {
+
+  if ($enable_default) {
+    $class .= ' ' . 'spacing';
+  }
+
+  if ($full_screen) {
+    $class .= ' ' . 'min-vh-100 d-flex align-items-center';
+  }
+
+  $class = preg_replace('/\s{2,}/', ' ', $class);
+
+  return $class;
+}
+
+
+/**
+ * Exibe o preload no site ao antes de carregar por completo.
+ * 
+ * @return mixed
+ */
+function menin_theme_preload() {
+
+  if (THEME_ENABLE_PRELOAD === true) : ?>
+
+    <div class="preload">
+      <img src="<?= THEMEROOT ?>/assets/img/loading.svg" alt="<?php _e('Carregando...', 'startertheme') ?>" height="35" width="35">
+    </div>
+
+    <script>
+      jQuery(function($) {
+        $('body').css('overflow-y', 'hidden');
+        window.addEventListener("load", function(event) {
+          $('.preload').fadeOut();
+          $('body').css('overflow-y', 'visible');
+        });
+
+        setTimeout(() => {
+          $('.preload').fadeOut();
+          $('body').css('overflow-y', 'visible');
+        }, 2500);
+      });
+    </script>
+
+  <?php
+  endif;
+}
+
+add_action('wp_body_open', 'menin_theme_preload', 10);
+
+
+/**
  * Navbar com breadcrumb após o header
  * Location: header.php
  */
@@ -141,7 +437,7 @@ function callback_navbar_header() {
 
   if (THEME_ENABLE_NAVBAR == true) {
 
-    if ( !(is_front_page() || is_home() || get_field('hidden_nav_in_page') == true) ) {
+    if ( !(is_front_page() || is_home() || is_single() || get_field('hidden_nav_in_page') == true) ) {
       get_template_part('template-parts/navbar');
     }
   }
@@ -181,6 +477,7 @@ function custom_breadcrumbs() {
 
     if (is_archive() && !is_tax() && !is_category() && !is_tag()) {
 
+      $archive_title = '';
       if (is_day()) {
         $format_date = (get_bloginfo('lang') == 'pt-BR') ? get_the_time('j/m/Y') : get_the_time('F j, Y');
         $archive_title = __('Registros de ', 'startertheme') . $format_date;
@@ -404,3 +701,73 @@ if ( WP_REMOVE_SUPPORT_COMMENTS !== false ) {
   }
   add_action( 'wp_before_admin_bar_render', 'mytheme_admin_bar_render' );
 }
+
+
+/**
+ * Logo do site
+ * 
+ * @return mixed
+ */
+function callback_custom_logo_setup() {
+  $defaults = array(
+    'height'               => 60,
+    'width'                => 'auto',
+    'flex-height'          => true,
+    'flex-width'           => true,
+    'header-text'          => array('site-title', 'site-description'),
+    'unlink-homepage-logo' => true,
+  );
+
+  add_theme_support('custom-logo', $defaults);
+}
+
+add_action('after_setup_theme', 'callback_custom_logo_setup');
+
+function theme_logo_callback() {
+  $custom_logo_id = get_theme_mod( 'custom_logo' );
+  $logo           = wp_get_attachment_image_src( $custom_logo_id , 'full' );
+    
+  if ( has_custom_logo() ) {
+    echo '<img src="' . esc_url( $logo[0] ) . '" alt="Logo ' . get_bloginfo( 'name' ) . '">'; 
+  }
+}
+
+add_filter('logo_tema', 'theme_logo_callback', 10);
+
+
+/**
+ * Obter página anterior do histórico de navegação
+ * back_page_of_history
+ *
+ * @return string
+ */
+function back_page_of_history() {
+  $previous = "javascript:history.go(-1)";
+  
+  if ( isset($_SERVER['HTTP_REFERER']) ) {
+    $previous = $_SERVER['HTTP_REFERER'];
+  }
+
+  return $previous;
+}
+
+
+/**
+ * Data de publicação e modificação do post
+ */
+function published_modified_date() {
+	$date        = get_the_date( 'U' );
+	$updated     = get_the_modified_date( 'U' );
+  $date_format = get_bloginfo('language') == 'pt-BR' ? 'd M Y, \à\s H:i' : 'M d, Y, \a\t H:i:s';
+  $utf_format  = 'Y-m-d\TH:i:s\Z';
+
+  $output = '<time itemprop="datePublished" putdate datetime="'.get_the_date($utf_format).'" class="entry-date"><span>'. __('Publicado em', 'startertheme') .'</span> ' . get_the_date( $date_format ) . '</time>';
+
+	if ( $updated > ( $date + 86400 ) ) {
+    $output .= '<span class="mx-2 fw-bold">·</span>';
+    $output .= '<time itemprop="dateModified" datetime="'.get_the_modified_date($utf_format).'" class="entry-date-modified"><span>'. __('Atualizado em', 'startertheme') .'</span> ' . get_the_modified_date( $date_format ) . '</time>';
+  }
+  
+	return $output;
+}
+add_shortcode( 'published_modified_date', 'published_modified_date' );

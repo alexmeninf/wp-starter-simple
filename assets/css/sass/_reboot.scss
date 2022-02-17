@@ -2,11 +2,6 @@
   outline: none !important;
 }
 
-::selection {
-  background-color: var(--color-theme-ligthen);
-  color: #fff;
-}
-
 ::-webkit-scrollbar {
   width: 12px;
   height: 12px;
@@ -48,6 +43,7 @@ button {
 
 a {
   color: var(--color-theme);
+  text-decoration: inherit;
 }
 
 a[disabled] {

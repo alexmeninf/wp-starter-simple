@@ -1,0 +1,30 @@
+.single-tags {
+  margin-top: $default-spacing-y / 2;
+
+  ul {
+    list-style: none;
+    margin-bottom: 0;
+    padding-left: 0;
+
+    @include media(sm) {
+      padding-left: 15px;
+    }
+  }
+
+  li {
+    display: inline-block;
+  }
+
+  .ceo-tag {
+    font-size: inherit;
+    margin: 0;
+  }
+
+  a {
+    color: var(--color-headline);
+    padding: 0.425rem 1rem;
+    font-size: .875rem;
+    line-height: 1.25rem;
+    display: inline-block;
+  }
+}

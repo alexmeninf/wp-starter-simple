@@ -14,7 +14,7 @@ if ( have_posts() ) : while ( have_posts() ) : the_post();?>
   <div class="container">
     <div class="row justify-content-center">
       
-      <div class="col-12">
+      <div class="col-lg-9">
         <?php the_content(); ?>
       </div>
     </div>

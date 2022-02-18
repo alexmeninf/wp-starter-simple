@@ -1,22 +1,22 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: wp-starter-simple\n"
-"POT-Creation-Date: 2021-10-28 10:28-0300\n"
-"PO-Revision-Date: 2021-10-28 10:34-0300\n"
+"POT-Creation-Date: 2022-02-18 09:56-0300\n"
+"PO-Revision-Date: 2022-02-18 09:57-0300\n"
 "Last-Translator: \n"
 "Language-Team: https://github.com/alexmeninf\n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0\n"
-"X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.0.1\n"
+"X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;esc_attr_e;esc_attr_x\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: assets\n"
 
-#: 404.php:17 inc/theme.php:135 inc/theme.php:574 index.php:17
+#: 404.php:17 inc/theme.php:167 inc/theme.php:669 index.php:17
 msgid "Página não encontrada"
 msgstr "Page not found"
 
@@ -28,59 +28,140 @@ msgstr ""
 "Sorry, but it looks like the page you accessed doesn't exist or may have "
 "been removed."
 
-#: 404.php:21 index.php:21
+#: 404.php:27 index.php:27
 msgid "Voltar ao Início"
 msgstr "Back to home"
 
-#: footer.php:12
+#: footer.php:17
 msgid "Todos os direitos reservados."
 msgstr "All rights reserved."
 
-#: footer.php:16
+#: footer.php:22
 msgid "Desenvolvido por"
 msgstr "Developed by"
 
-#: inc/theme.php:119 inc/theme.php:120
+#: inc/theme.php:151 inc/theme.php:152
 msgid "Opções do site"
 msgstr "Site Options"
 
-#: inc/theme.php:149 inc/theme.php:153 inc/theme.php:156 inc/theme.php:406
-#: inc/theme.php:409 inc/theme.php:412
+#: inc/theme.php:181 inc/theme.php:185 inc/theme.php:188 inc/theme.php:483
+#: inc/theme.php:486 inc/theme.php:489
 msgid "Registros de "
 msgstr "Archives of "
 
-#: inc/theme.php:159
+#: inc/theme.php:191
 msgid "Registros do autor"
 msgstr "Author archive"
 
-#: inc/theme.php:162
+#: inc/theme.php:194
 msgid "Registros do blog"
 msgstr "Blog archive"
 
-#: inc/theme.php:165
+#: inc/theme.php:197
 msgid "Resultados da pesquisa"
 msgstr "Search results"
 
-#: inc/theme.php:170
+#: inc/theme.php:202
 msgid "Os melhores produtos para você"
 msgstr "The best products for you"
 
-#: inc/theme.php:257
+#: inc/theme.php:230
+msgid "Não consegue comentar?"
+msgstr "Can't comment?"
+
+#: inc/theme.php:231
+msgid ""
+"<a href=\"https://facebook.com/home.php\" target=\"_blank\" rel=\"noreferrer "
+"noopener\" title=\"Conecte ao facebook\" class=\"text-decoration-none"
+"\">Conecte à sua conta do Facebook</a> em outra página e volte."
+msgstr ""
+"<a href=\"https://facebook.com/home.php\" target=\"_blank\" rel=\"noreferrer "
+"noopener\" title=\"Connect to facebook\" class=\"text-decoration-none"
+"\">Connect to your Facebook account Facebook</a> on another page and come "
+"back."
+
+#: inc/theme.php:322
 msgid "Página anterior"
 msgstr "Previous page"
 
-#: inc/theme.php:295
+#: inc/theme.php:360
 msgid "Próxima página"
 msgstr "Next page"
 
-#: inc/theme.php:342
+#: inc/theme.php:407
 msgid "Carregando..."
 msgstr "Loading..."
 
-#: inc/theme.php:566
+#: inc/theme.php:661
 msgid "Página"
 msgstr "Page"
 
-#: inc/theme.php:570
+#: inc/theme.php:665
 msgid "Resultado da pesquisa por"
 msgstr "Search results for"
+
+#: inc/theme.php:764
+msgid "Publicado em"
+msgstr "Published in"
+
+#: inc/theme.php:768
+msgid "Atualizado em"
+msgstr "Updated at"
+
+#: single.php:16
+msgid "Editar post"
+msgstr "Edit post"
+
+#: single.php:93
+msgid "Publicado por"
+msgstr "Published by"
+
+#: single.php:108
+msgid "Deixe seu comentário"
+msgstr "Leave your comment"
+
+#: template-parts/post/get_categories.php:14
+#, php-format
+msgid "Visualizar todos os posts em %s"
+msgstr "View all posts in %s"
+
+#: template-parts/post/get_prev-next-posts.php:14
+#: template-parts/post/get_prev-next-posts.php:21
+msgid "Ver postagem"
+msgstr "See post"
+
+#: template-parts/post/get_prev-next-posts.php:16
+msgid "Anterior"
+msgstr "Previous"
+
+#: template-parts/post/get_prev-next-posts.php:22
+msgid "Próximo"
+msgstr "Next"
+
+#: template-parts/post/get_share-post.php:12
+msgid "Compartilhe no Facebook"
+msgstr "share on Facebook"
+
+#: template-parts/post/get_share-post.php:17
+msgid "Compartilhe no Twitter"
+msgstr "share on Twitter"
+
+#: template-parts/post/get_share-post.php:22
+msgid "Compartilhe no Linkedin"
+msgstr "share on Linkedin"
+
+#: template-parts/post/get_share-post.php:27
+msgid "Compartilhe no WhatsApp"
+msgstr "share on WhatsApp"
+
+#: template-parts/post/get_share-post.php:32
+msgid "Compartilhe no Telegram"
+msgstr "share on Telegram"
+
+#: template-parts/post/get_share-post.php:42
+msgid "Compartilhe nos apps"
+msgstr "share on Apps"
+
+#: template-parts/post/get_tags.php:17
+msgid "Tags"
+msgstr "Tags"

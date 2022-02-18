@@ -13,7 +13,7 @@ if (have_posts()) : while (have_posts()) : the_post(); ?>
       <div class="max-w-screen-md mx-auto">
 
         <?php if (is_user_logged_in() && current_user_can('edit_posts')) : ?>
-          <a href="<?php echo get_edit_post_link(); ?>" class="btn-theme btn-small mb-3" target="_blank"><i class="fal fa-edit"></i> Editar post</a>
+          <a href="<?php echo get_edit_post_link(); ?>" class="btn-theme btn-small mb-3" target="_blank"><i class="fal fa-edit"></i> <?php _e('Editar post', 'starterthemesimple') ?></a>
         <?php endif; ?>
 
         <?php get_template_part('template-parts/post/get_categories'); ?>
@@ -95,10 +95,6 @@ if (have_posts()) : while (have_posts()) : the_post(); ?>
             <p class="author-name">
               <a href="<?php echo esc_url(get_author_posts_url(get_the_author_meta('ID'))); ?>"><?= get_the_author_meta('display_name') ?></a>
             </p>
-            <span class="author-description">
-              <?php the_author_meta('description') ?>
-              <a class="ml-2" href="<?php echo esc_url(get_author_posts_url(get_the_author_meta('ID'))); ?>"><?php _e('Leia mais', 'startertheme') ?></a>
-            </span>
           </div>
         </div>
       </div>

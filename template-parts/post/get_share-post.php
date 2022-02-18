@@ -39,7 +39,7 @@ if (!defined('ABSPATH'))
       </div>
     </li>
     <li>
-      <a class="share-default share-button" aria-label="Share button" title="<?php _e('Compartilhe nos apps', 'menin') ?>"><i class="fal fa-share-all"></i></a>
+      <a class="share-default share-button" aria-label="Share button" title="<?php _e('Compartilhe nos apps', 'startertheme') ?>"><i class="fal fa-share-all"></i></a>
     </li>
   </ul>
 </div>

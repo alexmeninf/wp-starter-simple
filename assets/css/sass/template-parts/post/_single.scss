@@ -103,7 +103,7 @@
 // Comentários
 .comments {
   border-top: 1px solid var(--color-border-color);
-  padding-top: ($default-spacing-y / 4);
+  padding-top: math.div($default-spacing-y, 4);
   margin-top: -1px;
 
   h2 {

@@ -1,5 +1,5 @@
 .single-tags {
-  margin-top: $default-spacing-y / 2;
+  margin-top: math.div($default-spacing-y, 2);
 
   ul {
     list-style: none;
@@ -10,7 +10,7 @@
       padding-left: 15px;
     }
   }
-
+  
   li {
     display: inline-block;
   }

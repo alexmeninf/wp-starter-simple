@@ -43,7 +43,7 @@ body {
 
 // Espaço entre as sessões
 .spacing {
-  padding: ($default-spacing-y / 1.5) $default-spacing-x;
+  padding: math.div($default-spacing-y, 1.5) $default-spacing-x;
 
   @include media(lg) {
     padding: $default-spacing-y $default-spacing-x;

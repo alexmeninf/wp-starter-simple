@@ -746,6 +746,8 @@ function back_page_of_history() {
   
   if ( isset($_SERVER['HTTP_REFERER']) ) {
     $previous = $_SERVER['HTTP_REFERER'];
+  } else {
+	  $previous = get_home_url('/');
   }
 
   return $previous;

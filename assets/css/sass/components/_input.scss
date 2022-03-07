@@ -75,7 +75,7 @@ textarea {
     &:not(:placeholder-shown) {
       + span {
         color: var(--color-theme);
-        transform: translateY(-11px) scale(0.66);
+        transform: translateY(-11px) scale(0.66);        
       }
     }
 
@@ -85,6 +85,7 @@ textarea {
       + span {
         color: var(--color-theme);
         transform: translateY(-11px) scale(0.66);
+        font-weight: 600;
       }
     }
   }
@@ -100,7 +101,7 @@ textarea {
     position: absolute;
     top: 1em;
     transform-origin: 0 0;
-    transition: all 0.2s ease;
+    transition: transform 0.2s ease, font-weight 0.05s ease-in;
     user-select: none;
 
     @include media(sm, max) {
@@ -132,14 +133,8 @@ textarea {
     border-bottom: 1px solid var(--color-input-border-color);
     border-radius: 0;
 
-    &:hover {
-      border-bottom-width: 2px;
-    }
-
     &:focus {
       + span {
-        transform: translate(-4px, -11px) scale(0.66);
-
         + .bar {
           transform: scaleX(1);
         }
@@ -204,8 +199,19 @@ textarea {
   input,
   textarea,
   select,
-  .txt {
+  .txt,
+  .title-form-group,
+  .form-check-label {
     color: $white !important;
+  }
+
+  input:not([type="radio"]):not([type="checkbox"]),
+  select,
+  textarea {
+    &:not(:placeholder-shown) + span,
+    &:focus {
+      opacity: 0.75;
+    }
   }
 
   option {
@@ -236,7 +242,7 @@ textarea {
   }
 }
 
-.default {
+.no-style-input {
   label {
     display: flex;
     flex-direction: column;
@@ -251,6 +257,13 @@ textarea {
   select {
     order: 1;
   }
+}
+
+// Titulo para grupo
+.title-form-group {
+  font-size: 1.15rem;
+  margin-bottom: 0.4em;
+  margin-top: 1.4em;
 }
 
 /** 

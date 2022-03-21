@@ -245,39 +245,38 @@ function support_comments_facebook($url = '') {
 
 /**
  * get_pagination
- * 
- * @version 1.1
  *
- * @param  integer $current_page
- * @param  integer $pages_count
- * @param  integer $maxLinks
+ * @version 1.2
  * 
- * @return mixed
+ * @param  mixed $current_page - Página atual selecionada na páginação
+ * @param  mixed $pages_count - Conta total de páginas geradas
+ * @param  mixed $maxLinks - Máximo de links na paginação antes/depois
+ * @param  mixed $param_name - Nome do paramentro atual para a url
+ * 
  */
-function get_pagination($current_page, $pages_count, $maxLinks = 2) {
+function get_pagination($current_page, $pages_count, $maxLinks = 2, $param_name = 'pg') {
   wp_reset_query();
 
-  $args = "?";
+  $args = "";
   $firstRun = true;
 
-  if (class_exists('WooCommerce')) :
-    foreach ($_GET as $key => $val) {
-      // Remove duplicate 'pg' parameter
-      $check_pg = ('pg' != $key);
+  foreach ($_GET as $key => $val) {
+    // Remove duplicate parameter
+    $check_pg = ($param_name != $key);
 
-      if ($key != $parameter) {
-        if (!$firstRun && $check_pg) {
-          $args .= "&";
-        } else {
-          $firstRun = false;
-        }
+    if ($key != $parameter) {
+      if (!$firstRun && $check_pg) {
+        $args .= "&";
+      } else {
+        $args .= '?aa';
+        $firstRun = false;
+      }
 
-        if ($check_pg) {
-          $args .= $key . "=" . $val;
-        }
+      if ($check_pg) {
+        $args .= $key . "=" . $val;
       }
     }
-  endif;
+  }
 
   if (is_search()) {
     $args .= 's=' . get_search_query();
@@ -308,7 +307,8 @@ function get_pagination($current_page, $pages_count, $maxLinks = 2) {
     $url  = get_the_permalink(get_the_ID());
   }
 
-  $url = esc_url($url) . $args;
+  $symbol_concat = $args != '' ? '&' : '?';
+  $url = esc_url($url) . $args . $symbol_concat;
 
   if ($pages_count > 0) : ?>
 
@@ -319,20 +319,20 @@ function get_pagination($current_page, $pages_count, $maxLinks = 2) {
         $disable_link = ($current_page == 1) ? 'disabled' : '';
 
         echo '<li class="page-item">';
-        echo '<a class="page-link" aria-label="Previous" title="' . __('Página anterior', 'startertheme') . '" ' . $disable_link . ' href="' . $url . '&pg=1"><span>&laquo;</span></a>';
+        echo '<a class="page-link" aria-label="Previous" title="' . __('Página anterior', 'startertheme') . '" ' . $disable_link . ' href="' . $url . $param_name . '=1"><span>&laquo;</span></a>';
         echo '</li>';
 
         // Previous pages
         for ($i = $current_page - $maxLinks; $i <= $current_page - 1; $i++) :
           if ($i >= 1) :
             echo '<li>';
-            echo '<a class="page-link" href="' . $url . '&pg=' . $i . '">' . $i . '</a>';
+            echo '<a class="page-link" href="' . $url . $param_name . '=' . $i . '">' . $i . '</a>';
             echo '</li>';
           endif;
         endfor;
 
         // Current page
-        echo '<li class="page-item active"><a class="page-link" href="' . $url . '&pg=' . $current_page . '"> ' . $current_page . '</a></li>';
+        echo '<li class="page-item active"><a class="page-link" href="' . $url . $param_name . '=' . $current_page . '"> ' . $current_page . '</a></li>';
 
         // Next pages        
         $displaying_the_last = false;
@@ -340,7 +340,7 @@ function get_pagination($current_page, $pages_count, $maxLinks = 2) {
         for ($i = $current_page + 1; $i <= $current_page + $maxLinks; $i++) :
           if ($i <= $pages_count) :
             echo '<li class="page-item">';
-            echo '<a class="page-link" href="' . $url . '&pg=' . $i . '">' . $i . '</a>';
+            echo '<a class="page-link" href="' . $url . $param_name . '=' . $i . '">' . $i . '</a>';
             echo '</li>';
           endif;
 
@@ -352,7 +352,7 @@ function get_pagination($current_page, $pages_count, $maxLinks = 2) {
         if ($current_page != $pages_count && !$displaying_the_last) :
           echo '<li class="page-item"><a class="page-link" disabled>...</a></li>';
           echo '<li class="page-item">';
-          echo '<a class="page-link" href="' . $url . '&pg=' . $pages_count . '">' . $pages_count . '</a>';
+          echo '<a class="page-link" href="' . $url . $param_name . '=' . $pages_count . '">' . $pages_count . '</a>';
           echo '</li>';
         endif;
 
@@ -360,7 +360,7 @@ function get_pagination($current_page, $pages_count, $maxLinks = 2) {
         $disable_link = ($current_page == $pages_count) ? 'disabled' : 'title="' . __('Próxima página', 'startertheme') . '"';
 
         echo '<li class="page-item">';
-        echo '<a class="page-link" aria-label="Next" ' . $disable_link . ' href="' . (($current_page != $pages_count) ? ($url . '&pg=' . ($current_page + 1)) : '') . '"><span>&raquo;</span></a>';
+        echo '<a class="page-link" aria-label="Next" ' . $disable_link . ' href="' . (($current_page != $pages_count) ? ($url . $param_name . '=' . ($current_page + 1)) : '') . '"><span>&raquo;</span></a>';
         echo '</li>';
         ?>
       </ul>

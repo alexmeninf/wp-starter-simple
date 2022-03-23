@@ -59,20 +59,19 @@ function use_js($name = '', $condition = '', $validate = '')
 	global $wp_starter_js, $wp_starter_use_js, $wp_starter_condition_js;
 
 	if ($name != '') {
+		$generate_id = uniqid(); // Get a New ID
+
 		if ($condition != '') { // If have a condition to insert the JS
-			$generate_id = uniqid(); // Get a New ID
 			$wp_starter_condition_js[$generate_id]['name']      = $name . $generate_id;
 			$wp_starter_condition_js[$generate_id]['original']  = $name;
 			$wp_starter_condition_js[$generate_id]['condition'] = $condition;
 			$wp_starter_condition_js[$generate_id]['validate']  = $validate;
-		} else { // Don't have any conditions
-			$generate_id = uniqid(); // Get a New ID
-			$wp_starter_use_js[$generate_id]['name']     = $name . $generate_id;
-			$wp_starter_use_js[$generate_id]['path']     = $wp_starter_js[$name];
-			$wp_starter_use_js[$generate_id]['original'] = $name;
 		}
 
-		$wp_starter_use_js[$generate_id]['_dir'] = $wp_starter_js[$name . '_dir'];
+		$wp_starter_use_js[$generate_id]['name']     = $name . $generate_id;
+		$wp_starter_use_js[$generate_id]['path']     = $wp_starter_js[$name];
+		$wp_starter_use_js[$generate_id]['original'] = $name;
+		$wp_starter_use_js[$generate_id]['_dir']     = $wp_starter_js[$name . '_dir'];
 	}
 }
 

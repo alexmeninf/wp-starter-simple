@@ -58,18 +58,17 @@ function use_css($name = '', $condition = '', $validate = '')
 	global $wp_starter_css, $wp_starter_use_css, $wp_starter_condition_css;
 
 	if ($name != '') {
+		$generate_id = uniqid(); // Get a New ID
+		
 		if ($condition != '') { // If have a condition to insert the CSS
-			$generate_id = uniqid(); // Get a New ID
 			$wp_starter_condition_css[$generate_id]['name']      = $name . $generate_id;
 			$wp_starter_condition_css[$generate_id]['original']  = $name;
 			$wp_starter_condition_css[$generate_id]['condition'] = $condition;
 			$wp_starter_condition_css[$generate_id]['validate']  = $validate;
-		} else { // Don't have any conditions
-			$generate_id = uniqid(); // Get a New ID
-			$wp_starter_use_css[$generate_id]['name'] = $name . $generate_id;
-			$wp_starter_use_css[$generate_id]['path'] = $wp_starter_css[$name];
 		}
-
+		
+		$wp_starter_use_css[$generate_id]['name'] = $name . $generate_id;
+		$wp_starter_use_css[$generate_id]['path'] = $wp_starter_css[$name];
 		$wp_starter_use_css[$generate_id]['_dir'] = $wp_starter_css[$name . '_dir'];
 	}
 }

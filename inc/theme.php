@@ -248,35 +248,51 @@ function support_comments_facebook($url = '') {
  *
  * @version 1.2
  * 
- * @param  mixed $current_page - Página atual selecionada na páginação
- * @param  mixed $pages_count - Conta total de páginas geradas
- * @param  mixed $maxLinks - Máximo de links na paginação antes/depois
- * @param  mixed $param_name - Nome do paramentro atual para a url
+ * @param integer $current_page - Página atual selecionada na páginação
+ * @param integer $pages_count - Conta total de páginas geradas
+ * @param integer $maxLinks - Máximo de links na paginação antes/depois
+ * @param string $param_name - Nome do paramentro atual para a url
  * 
  */
 function get_pagination($current_page, $pages_count, $maxLinks = 2, $param_name = 'pg') {
   wp_reset_query();
 
-  $args = "";
+  $args = "?";
   $firstRun = true;
 
-  foreach ($_GET as $key => $val) {
-    // Remove duplicate parameter
-    $check_pg = ($param_name != $key);
+  if (!empty($_GET)) {
 
-    if ($key != $parameter) {
-      if (!$firstRun && $check_pg) {
-        $args .= "&";
-      } else {
-        $args .= '?aa';
-        $firstRun = false;
-      }
+    $i = 0;
 
-      if ($check_pg) {
-        $args .= $key . "=" . $val;
+    foreach ($_GET as $key => $val) {
+      // Remove duplicate parameter
+      $check_pg = ($param_name != $key);
+
+      if ($key != null) {
+        if (!$firstRun && $check_pg) {
+          $args .= $args == '?' ? '' : '&';
+        } else {
+          $firstRun = false;
+        }
+
+        if ($check_pg) {
+          if (is_array($val)) {
+            $count = count($val);
+            foreach ($val as $valitem) {
+              $args .= $key . "[]=" . $valitem;
+              if (++$i !== $count) {
+                $args .= '&';
+              }
+            }
+          } else {
+            $args .= $key . "=" . $val;
+          }
+        }
       }
     }
   }
+
+  $symbol_concat = $args != '?' ? '&' : '';
 
   if (is_search()) {
     $args .= 's=' . get_search_query();
@@ -307,7 +323,6 @@ function get_pagination($current_page, $pages_count, $maxLinks = 2, $param_name 
     $url  = get_the_permalink(get_the_ID());
   }
 
-  $symbol_concat = $args != '' ? '&' : '?';
   $url = esc_url($url) . $args . $symbol_concat;
 
   if ($pages_count > 0) : ?>

@@ -21,6 +21,8 @@ body {
   --color-button-text: #{$white};
   --color-button-background-hover: var(--color-theme-darken);
   --color-button-text-hover: #{$white};
+  --color-button-border-color: var(--color-button-background);
+  --color-button-border-color-hover: var(--color-button-background-hover);
   // Input
   --color-input-txt: var(--color-txt);
   --color-input-border-color: #{$border-color};

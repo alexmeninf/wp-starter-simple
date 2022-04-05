@@ -29,10 +29,10 @@
   @include button(
     var(--color-button-background), 
     var(--color-button-text), 
-    var(--color-button-background), 
+    var(--color-button-border-color), 
     var(--color-button-background-hover), 
     var(--color-button-text-hover), 
-    var(--color-button-background-hover)
+    var(--color-button-border-color-hover)
   );
 }
 
@@ -49,9 +49,9 @@
   @include button(
     transparent, 
     var(--color-button-background), 
-    var(--color-button-background), 
+    var(--color-button-border-color), 
     var(--color-button-background), 
     var(--color-button-text), 
-    var(--color-button-background)
+    var(--color-button-border-color-hover)
   );
 }

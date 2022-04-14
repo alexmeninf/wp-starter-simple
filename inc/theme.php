@@ -1,60 +1,72 @@
-<?php 
+<?php
 
-if ( ! defined( 'ABSPATH' ) ) 
-	exit;
+if (!defined('ABSPATH'))
+  exit;
 
 /*
 * Make theme available for translation.
 * Translations can be filed in the /languages/ directory.
 */
-add_action( 'after_setup_theme', 'theme_setup_lang' );
+add_action('after_setup_theme', 'theme_setup_lang');
 
-function theme_setup_lang() {
-  load_theme_textdomain( 'startertheme', get_template_directory() . '/languages' );
+function theme_setup_lang()
+{
+  load_theme_textdomain('startertheme', get_template_directory() . '/languages');
 }
 
 
-/**
- * Add HTML5 theme support.
- */
-function wp_after_setup_theme() {
-  add_theme_support( 
-    'html5', 
-    array( 
-      'search-form', 
-      'style', 
+add_action('after_setup_theme', function () {
+
+  /**
+   * Add HTML5 theme support.
+   */
+  add_theme_support(
+    'html5',
+    array(
+      'search-form',
+      'style',
       'script',
-      'navigation-widgets', 
-      ) 
-    );
-}
-add_action( 'after_setup_theme', 'wp_after_setup_theme' );
+      'navigation-widgets',
+    )
+  );
 
+  /**
+   * Add theme support for selective refresh for widgets.
+   */
+  add_theme_support('customize-selective-refresh-widgets');
 
-/**
- * Add theme support for selective refresh for widgets.
-*/
-add_theme_support( 'customize-selective-refresh-widgets' );
+  /**
+   * Supost Thumbnals
+   */
+  add_theme_support('post-thumbnails');
 
-/**
- * Supost Thumbnals
-*/
-add_theme_support( 'post-thumbnails' );
+  /**
+   * Register support to the menus
+   */
+  register_nav_menus(
+    array(
+      'primary' => esc_html__('Primary menu', 'startertheme'),
+    )
+  );
 
-/**
- * Register support to the menus
- */
-register_nav_menus(
-  array(
-    'primary' => esc_html__( 'Primary menu', 'startertheme' ),
-  )
-);
+  /*
+	 * Remove meta tag generator 
+	 * Vulnerabilidade que mostra a versão do WP
+	 */
+  remove_action('wp_head', 'wp_generator');
 
-/*
- * Remove meta tag generator 
- * Vulnerabilidade que mostra a versão do WP
- */
-remove_action('wp_head', 'wp_generator');
+  // remove SVG and global styles
+  remove_action('wp_enqueue_scripts', 'wp_enqueue_global_styles');
+
+  // remove wp_footer actions which add's global inline styles
+  remove_action('wp_footer', 'wp_enqueue_global_styles', 1);
+
+  // remove render_block filters which adding unnecessary stuff
+  remove_filter('render_block', 'wp_render_duotone_support');
+  remove_filter('render_block', 'wp_restore_group_inner_container');
+  remove_filter('render_block', 'wp_render_layout_support_flag');
+  remove_action('wp_body_open', 'wp_global_styles_render_svg_filters');
+});
 
 
 /**
@@ -62,7 +74,8 @@ remove_action('wp_head', 'wp_generator');
  *
  * @return void
  */
-function enable_preload_fonts() {
+function enable_preload_fonts()
+{
 
   if (THEME_ENABLE_PRELOAD_FONT === true) : ?>
 
@@ -82,7 +95,8 @@ add_action('wp_head', 'enable_preload_fonts', 2);
 /**
  * Update Layout to Login Admin
  */
-function wp_custom_logo_in_login() {
+function wp_custom_logo_in_login()
+{
 
   $css = '<style type="text/css">
     #login h1 a,
@@ -132,70 +146,63 @@ add_action('login_enqueue_scripts', 'wp_custom_logo_in_login');
 /**
  * remove some styles
  */
-function wc_remove_block_library_css(){
-	if ( is_page_template() || is_front_page() ) {
-		wp_dequeue_style( 'wc-block-style' );
-		wp_dequeue_style( 'wp-block-library' );
-	}
-} 
-add_action( 'wp_enqueue_scripts', 'wc_remove_block_library_css' );
+function wc_remove_block_library_css()
+{
+  if (is_page_template() || is_front_page()) {
+    wp_dequeue_style('wc-block-style');
+    wp_dequeue_style('wp-block-library');
+  }
+}
+add_action('wp_enqueue_scripts', 'wc_remove_block_library_css');
 
 
 /*====================================
 =            OPTIONS PAGE            =
 ====================================*/
-if( function_exists('acf_add_options_page') ) {
+if (function_exists('acf_add_options_page')) {
 
-	acf_add_options_page(
+  acf_add_options_page(
     array(
-		'page_title'  => __('Opções do site', 'startertheme'),
-		'menu_title'  => __('Opções do site', 'startertheme'),
-		'menu_slug'   => 'opcoes',
-		'capability'  => 'edit_posts',
-		'redirect'    => false
-	));
+      'page_title'  => __('Opções do site', 'startertheme'),
+      'menu_title'  => __('Opções do site', 'startertheme'),
+      'menu_slug'   => 'opcoes',
+      'capability'  => 'edit_posts',
+      'redirect'    => false
+    )
+  );
 }
 
 
 /**
  * Show the page name
  */
-function the_title_page() {
+function the_title_page()
+{
   $lang = get_bloginfo("language");
 
   if (is_404()) {
     echo __('Página não encontrada', 'startertheme');
-
   } elseif (is_tag()) {
     single_tag_title();
-
   } elseif (is_category()) {
     single_cat_title();
-    
   } elseif (is_tax()) {
     $term = get_term_by('slug', get_query_var('term'), get_query_var('taxonomy'));
     echo $term->name;
-
   } elseif (is_day()) {
     $date = ($lang == 'pt-BR') ? get_the_time('j \d\e F \d\e Y') : get_the_time('F j, Y');
     echo __('Registros de ', 'startertheme') . $date;
-
   } elseif (is_month()) {
     $date = ($lang == 'pt-BR') ? get_the_time('F \d\e Y') : get_the_time('F, Y');
     echo __('Registros de ', 'startertheme') . $date;
-
   } elseif (is_year()) {
     echo __('Registros de ', 'startertheme') . get_the_time('Y');
-
   } elseif (is_author()) {
     echo __('Registros do autor', 'startertheme');
-
   } elseif (isset($_GET['p']) && !empty($_GET['p'])) {
     echo __('Registros do blog', 'startertheme');
-
   } elseif (is_search()) {
     echo __('Resultados da pesquisa', 'startertheme');
-
   } else {
     if (class_exists('WooCommerce')) {
       if (is_shop()) {
@@ -213,32 +220,41 @@ function the_title_page() {
 /**
  * Support Facebook comments
  */
-function support_comments_facebook($url = '') {
-	if ($url == '') {
-		$url = esc_url( get_permalink() );
-	} ?>
+function support_comments_facebook($url = '')
+{
+  if ($url == '') {
+    $url = esc_url(get_permalink());
+  } ?>
 
   <style>
-    .fb_iframe_widget_fluid_desktop iframe { width: 100% !important; }
-    .face-link {font-size: 14px}
-    .face-link a {color: var(--bs-primary); }
+    .fb_iframe_widget_fluid_desktop iframe {
+      width: 100% !important;
+    }
+
+    .face-link {
+      font-size: 14px
+    }
+
+    .face-link a {
+      color: var(--bs-primary);
+    }
   </style>
 
   <?php if (strstr($_SERVER['HTTP_USER_AGENT'], 'iPhone') || strstr($_SERVER['HTTP_USER_AGENT'], 'iPad') || strstr($_SERVER['HTTP_USER_AGENT'], 'Mac')) : ?>
     <p class="ms-2 face-link">
-      <i class="fab fa-facebook me-1"></i> 
-      <?php _e('Não consegue comentar?', 'startertheme') ?> 
+      <i class="fab fa-facebook me-1"></i>
+      <?php _e('Não consegue comentar?', 'startertheme') ?>
       <?php _e('<a href="https://facebook.com/home.php" target="_blank" rel="noreferrer noopener" title="Conecte ao facebook" class="text-decoration-none">Conecte à sua conta do Facebook</a> em outra página e volte.', 'startertheme') ?>
     </p>
   <?php endif; ?>
 
   <div class="comment-box">
     <div class="fb-comments" data-order-by="reverse_time" data-href="<?php echo $url ?>" data-width="100%" data-numposts="5"></div>
-  </div>  
-  
+  </div>
+
   <div id="fb-root"></div>
   <script async defer crossorigin="anonymous" src="https://connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v13.0" nonce="lkGf2c72"></script>
-  
+
   <?php
 }
 
@@ -254,7 +270,8 @@ function support_comments_facebook($url = '') {
  * @param string $param_name - Nome do paramentro atual para a url
  * 
  */
-function get_pagination($current_page, $pages_count, $maxLinks = 2, $param_name = 'pg') {
+function get_pagination($current_page, $pages_count, $maxLinks = 2, $param_name = 'pg')
+{
   wp_reset_query();
 
   $args = "?";
@@ -297,28 +314,20 @@ function get_pagination($current_page, $pages_count, $maxLinks = 2, $param_name 
   if (is_search()) {
     $args .= 's=' . get_search_query();
     $url = get_bloginfo('url');
-
   } elseif (is_category()) {
     $url = get_category_link(get_queried_object()->term_id);
-
   } elseif (is_tax()) {
     $url = get_term_link(get_queried_object()->term_id);
-
   } elseif (is_tag()) {
     $url = get_tag_link(get_queried_object()->term_id);
-
   } elseif (is_day()) {
     $url = get_day_link(get_the_time('Y'), get_the_time('m'), get_the_time('d'));
-
   } elseif (is_month()) {
     $url = get_month_link(get_the_time('Y'), get_the_time('m'));
-
   } elseif (is_year()) {
     $url = get_year_link(get_the_time('Y'));
-
   } elseif (is_author()) {
     $url = get_author_posts_url(get_queried_object()->term_id);
-
   } else {
     $url  = get_the_permalink(get_the_ID());
   }
@@ -393,7 +402,8 @@ function get_pagination($current_page, $pages_count, $maxLinks = 2, $param_name 
  * 
  * @return string
  */
-function section_class($class = '', $enable_default = true, $full_screen = true) {
+function section_class($class = '', $enable_default = true, $full_screen = true)
+{
 
   if ($enable_default) {
     $class .= ' ' . 'spacing';
@@ -414,7 +424,8 @@ function section_class($class = '', $enable_default = true, $full_screen = true)
  * 
  * @return mixed
  */
-function menin_theme_preload() {
+function menin_theme_preload()
+{
 
   if (THEME_ENABLE_PRELOAD === true) : ?>
 
@@ -437,7 +448,7 @@ function menin_theme_preload() {
       });
     </script>
 
-  <?php
+<?php
   endif;
 }
 
@@ -448,11 +459,12 @@ add_action('wp_body_open', 'menin_theme_preload', 10);
  * Navbar com breadcrumb após o header
  * Location: header.php
  */
-function callback_navbar_header() {
+function callback_navbar_header()
+{
 
   if (THEME_ENABLE_NAVBAR == true) {
 
-    if ( !(is_front_page() || is_home() || is_single() || get_field('hidden_nav_in_page') == true) ) {
+    if (!(is_front_page() || is_home() || is_single() || get_field('hidden_nav_in_page') == true)) {
       get_template_part('template-parts/navbar');
     }
   }
@@ -464,7 +476,8 @@ add_action('wp_body_open', 'callback_navbar_header', 30);
 /**
  * custom_breadcrumbs
  */
-function custom_breadcrumbs() {
+function custom_breadcrumbs()
+{
   // Configuracoes
   $separator          = '';
   $breadcrums_id      = 'breadcrumbs';
@@ -485,10 +498,10 @@ function custom_breadcrumbs() {
     echo '<ul id="' . $breadcrums_id . '" class="' . $breadcrums_class . '">';
 
     // Home page
-    echo '<li class="'.$li_class.' item-home"><a class="bread-link bread-home" href="' . get_home_url() . '" title="' . $home_title . '">' . $home_title . '</a></li>';
+    echo '<li class="' . $li_class . ' item-home"><a class="bread-link bread-home" href="' . get_home_url() . '" title="' . $home_title . '">' . $home_title . '</a></li>';
 
-    if ( ! empty($separator) ) 
-      echo '<li class="'.$li_class.' separator"> ' . $separator . ' </li>';
+    if (!empty($separator))
+      echo '<li class="' . $li_class . ' separator"> ' . $separator . ' </li>';
 
     if (is_archive() && !is_tax() && !is_category() && !is_tag()) {
 
@@ -496,16 +509,13 @@ function custom_breadcrumbs() {
       if (is_day()) {
         $format_date = (get_bloginfo('lang') == 'pt-BR') ? get_the_time('j/m/Y') : get_the_time('F j, Y');
         $archive_title = __('Registros de ', 'startertheme') . $format_date;
-    
       } elseif (is_month()) {
         $archive_title = __('Registros de ', 'startertheme') . get_the_time('F, Y');
-    
       } elseif (is_year()) {
         $archive_title = __('Registros de ', 'startertheme') . get_the_time('Y');
-      }    
-      
-      echo '<li class="'.$li_class.' item-current item-archive"><span class="bread-current bread-archive">' . $archive_title . '</span></li>';
+      }
 
+      echo '<li class="' . $li_class . ' item-current item-archive"><span class="bread-current bread-archive">' . $archive_title . '</span></li>';
     } else if (is_archive() && is_tax() && !is_category() && !is_tag()) {
 
       // Se post é um tipo de postagem personalizado
@@ -517,15 +527,14 @@ function custom_breadcrumbs() {
         $post_type_object = get_post_type_object($post_type);
         $post_type_archive = get_post_type_archive_link($post_type);
 
-        echo '<li class="'.$li_class.' item-cat item-custom-post-type-' . $post_type . '"><a class="bread-cat bread-custom-post-type-' . $post_type . '" href="' . $post_type_archive . '" title="' . $post_type_object->labels->name . '">' . $post_type_object->labels->name . '</a></li>';
-        
-        if ( ! empty($separator) ) 
-          echo '<li class="'.$li_class.' separator"> ' . $separator . ' </li>';
+        echo '<li class="' . $li_class . ' item-cat item-custom-post-type-' . $post_type . '"><a class="bread-cat bread-custom-post-type-' . $post_type . '" href="' . $post_type_archive . '" title="' . $post_type_object->labels->name . '">' . $post_type_object->labels->name . '</a></li>';
+
+        if (!empty($separator))
+          echo '<li class="' . $li_class . ' separator"> ' . $separator . ' </li>';
       }
 
       $custom_tax_name = get_queried_object()->name;
-      echo '<li class="'.$li_class.' item-current item-archive"><span class="bread-current bread-archive">' . $custom_tax_name . '</span></li>';
-
+      echo '<li class="' . $li_class . ' item-current item-archive"><span class="bread-current bread-archive">' . $custom_tax_name . '</span></li>';
     } else if (is_single()) {
 
       $post_type = get_post_type();
@@ -534,10 +543,10 @@ function custom_breadcrumbs() {
         $post_type_object = get_post_type_object($post_type);
         $post_type_archive = get_post_type_archive_link($post_type);
 
-        echo '<li class="'.$li_class.' item-cat item-custom-post-type-' . $post_type . '"><a class="bread-cat bread-custom-post-type-' . $post_type . '" href="' . $post_type_archive . '" title="' . $post_type_object->labels->name . '">' . $post_type_object->labels->name . '</a></li>';
-        
-        if ( ! empty($separator) ) 
-          echo '<li class="'.$li_class.' separator"> ' . $separator . ' </li>';
+        echo '<li class="' . $li_class . ' item-cat item-custom-post-type-' . $post_type . '"><a class="bread-cat bread-custom-post-type-' . $post_type . '" href="' . $post_type_archive . '" title="' . $post_type_object->labels->name . '">' . $post_type_object->labels->name . '</a></li>';
+
+        if (!empty($separator))
+          echo '<li class="' . $li_class . ' separator"> ' . $separator . ' </li>';
       }
 
       // Obter informações de categoria
@@ -560,7 +569,7 @@ function custom_breadcrumbs() {
 
       // Se for um tipo de publicação personalizado dentro de uma taxonomia personalizada
       $taxonomy_exists = taxonomy_exists($custom_taxonomy);
-      
+
       if (empty($last_category) && !empty($custom_taxonomy) && $taxonomy_exists) {
         $taxonomy_terms = get_the_terms($post->ID, $custom_taxonomy);
         $cat_id         = $taxonomy_terms[0]->term_id;
@@ -572,25 +581,22 @@ function custom_breadcrumbs() {
       // Verifique se o post está em uma categoria
       if (!empty($last_category)) {
         echo $cat_display;
-        echo '<li class="'.$li_class.' item-current item-' . $post->ID . '"><span class="bread-current bread-' . $post->ID . '" title="' . get_the_title() . '">' . get_the_title() . '</span></li>';
+        echo '<li class="' . $li_class . ' item-current item-' . $post->ID . '"><span class="bread-current bread-' . $post->ID . '" title="' . get_the_title() . '">' . get_the_title() . '</span></li>';
 
         // Em caso de publicação em uma taxonomia personalizada
       } else if (!empty($cat_id)) {
-        echo '<li class="'.$li_class.' item-cat item-cat-' . $cat_id . ' item-cat-' . $cat_nicename . '"><a class="bread-cat bread-cat-' . $cat_id . ' bread-cat-' . $cat_nicename . '" href="' . $cat_link . '" title="' . $cat_name . '">' . $cat_name . '</a></li>';
-        
-        if ( ! empty($separator) ) 
-          echo '<li class="'.$li_class.' separator"> ' . $separator . ' </li>';
-        
-        echo '<li class="'.$li_class.' item-current item-' . $post->ID . '"><span class="bread-current bread-' . $post->ID . '" title="' . get_the_title() . '">' . get_the_title() . '</span></li>';
-      
+        echo '<li class="' . $li_class . ' item-cat item-cat-' . $cat_id . ' item-cat-' . $cat_nicename . '"><a class="bread-cat bread-cat-' . $cat_id . ' bread-cat-' . $cat_nicename . '" href="' . $cat_link . '" title="' . $cat_name . '">' . $cat_name . '</a></li>';
+
+        if (!empty($separator))
+          echo '<li class="' . $li_class . ' separator"> ' . $separator . ' </li>';
+
+        echo '<li class="' . $li_class . ' item-current item-' . $post->ID . '"><span class="bread-current bread-' . $post->ID . '" title="' . get_the_title() . '">' . get_the_title() . '</span></li>';
       } else {
-        echo '<li class="'.$li_class.' item-current item-' . $post->ID . '"><span class="bread-current bread-' . $post->ID . '" title="' . get_the_title() . '">' . get_the_title() . '</span></li>';
-      
+        echo '<li class="' . $li_class . ' item-current item-' . $post->ID . '"><span class="bread-current bread-' . $post->ID . '" title="' . get_the_title() . '">' . get_the_title() . '</span></li>';
       }
     } else if (is_category()) {
       // Página Category
-      echo '<li class="'.$li_class.' item-current item-cat"><span class="bread-current bread-cat">' . single_cat_title('', false) . '</span></li>';
-    
+      echo '<li class="' . $li_class . ' item-current item-cat"><span class="bread-current bread-cat">' . single_cat_title('', false) . '</span></li>';
     } else if (is_page()) {
       // Página padrão
       if ($post->post_parent) {
@@ -600,22 +606,20 @@ function custom_breadcrumbs() {
 
         if (!isset($parents)) $parents = null;
         foreach ($anc as $ancestor) {
-          $parents .= '<li class="'.$li_class.' item-parent item-parent-' . $ancestor . '"><a class="bread-parent bread-parent-' . $ancestor . '" href="' . get_permalink($ancestor) . '" title="' . get_the_title($ancestor) . '">' . get_the_title($ancestor) . '</a></li>';
-          
-          if ( ! empty($separator) ) 
-            $parents .= '<li class="'.$li_class.' separator separator-' . $ancestor . '"> ' . $separator . ' </li>';
+          $parents .= '<li class="' . $li_class . ' item-parent item-parent-' . $ancestor . '"><a class="bread-parent bread-parent-' . $ancestor . '" href="' . get_permalink($ancestor) . '" title="' . get_the_title($ancestor) . '">' . get_the_title($ancestor) . '</a></li>';
+
+          if (!empty($separator))
+            $parents .= '<li class="' . $li_class . ' separator separator-' . $ancestor . '"> ' . $separator . ' </li>';
         }
 
         echo $parents;
 
         // Página Atual
-        echo '<li class="'.$li_class.' item-current item-' . $post->ID . '"><span title="' . get_the_title() . '"> ' . get_the_title() . '</span></li>';
-      
+        echo '<li class="' . $li_class . ' item-current item-' . $post->ID . '"><span title="' . get_the_title() . '"> ' . get_the_title() . '</span></li>';
       } else {
         // Basta exibir a página atual se não os pais
-        echo '<li class="'.$li_class.' item-current item-' . $post->ID . '"><span class="bread-current bread-' . $post->ID . '"> ' . get_the_title() . '</span></li>';
+        echo '<li class="' . $li_class . ' item-current item-' . $post->ID . '"><span class="bread-current bread-' . $post->ID . '"> ' . get_the_title() . '</span></li>';
       }
-
     } else if (is_tag()) {
 
       // Página de Tag
@@ -629,59 +633,52 @@ function custom_breadcrumbs() {
       $get_term_name  = $terms[0]->name;
 
       // Exibir o nome da Tag
-      echo '<li class="'.$li_class.' item-current item-tag-' . $get_term_id . ' item-tag-' . $get_term_slug . '"><span class="bread-current bread-tag-' . $get_term_id . ' bread-tag-' . $get_term_slug . '">' . $get_term_name . '</span></li>';
-    
+      echo '<li class="' . $li_class . ' item-current item-tag-' . $get_term_id . ' item-tag-' . $get_term_slug . '"><span class="bread-current bread-tag-' . $get_term_id . ' bread-tag-' . $get_term_slug . '">' . $get_term_name . '</span></li>';
     } elseif (is_day()) {
 
       // Day archive
       // Year link
-      echo '<li class="'.$li_class.' item-year item-year-' . get_the_time('Y') . '"><a class="bread-year bread-year-' . get_the_time('Y') . '" href="' . get_year_link(get_the_time('Y')) . '" title="' . get_the_time('Y') . '">' . get_the_time('Y') . ' Archives</a></li>';
-      
-      if ( ! empty($separator) ) 
-        echo '<li class="'.$li_class.' separator separator-' . get_the_time('Y') . '"> ' . $separator . ' </li>';
+      echo '<li class="' . $li_class . ' item-year item-year-' . get_the_time('Y') . '"><a class="bread-year bread-year-' . get_the_time('Y') . '" href="' . get_year_link(get_the_time('Y')) . '" title="' . get_the_time('Y') . '">' . get_the_time('Y') . ' Archives</a></li>';
+
+      if (!empty($separator))
+        echo '<li class="' . $li_class . ' separator separator-' . get_the_time('Y') . '"> ' . $separator . ' </li>';
 
 
       // Month link
-      echo '<li class="'.$li_class.' item-month item-month-' . get_the_time('m') . '"><a class="bread-month bread-month-' . get_the_time('m') . '" href="' . get_month_link(get_the_time('Y'), get_the_time('m')) . '" title="' . get_the_time('M') . '">' . get_the_time('M') . ' Archives</a></li>';
-      
-      if ( ! empty($separator) ) 
-        echo '<li class="'.$li_class.' separator separator-' . get_the_time('m') . '"> ' . $separator . ' </li>';
+      echo '<li class="' . $li_class . ' item-month item-month-' . get_the_time('m') . '"><a class="bread-month bread-month-' . get_the_time('m') . '" href="' . get_month_link(get_the_time('Y'), get_the_time('m')) . '" title="' . get_the_time('M') . '">' . get_the_time('M') . ' Archives</a></li>';
+
+      if (!empty($separator))
+        echo '<li class="' . $li_class . ' separator separator-' . get_the_time('m') . '"> ' . $separator . ' </li>';
 
 
       // Day display
-      echo '<li class="'.$li_class.' item-current item-' . get_the_time('j') . '"><span class="bread-current bread-' . get_the_time('j') . '"> ' . get_the_time('jS') . ' ' . get_the_time('M') . ' Archives</span></li>';
-    
+      echo '<li class="' . $li_class . ' item-current item-' . get_the_time('j') . '"><span class="bread-current bread-' . get_the_time('j') . '"> ' . get_the_time('jS') . ' ' . get_the_time('M') . ' Archives</span></li>';
     } else if (is_month()) {
       // Arquivo               
 
-      echo '<li class="'.$li_class.' item-year item-year-' . get_the_time('Y') . '"><a class="bread-year bread-year-' . get_the_time('Y') . '" href="' . get_year_link(get_the_time('Y')) . '" title="' . get_the_time('Y') . '">' . get_the_time('Y') . ' Archives</a></li>';
-      
-      if ( ! empty($separator) ) 
-        echo '<li class="'.$li_class.' separator separator-' . get_the_time('Y') . '"> ' . $separator . ' </li>';
+      echo '<li class="' . $li_class . ' item-year item-year-' . get_the_time('Y') . '"><a class="bread-year bread-year-' . get_the_time('Y') . '" href="' . get_year_link(get_the_time('Y')) . '" title="' . get_the_time('Y') . '">' . get_the_time('Y') . ' Archives</a></li>';
 
-      echo '<li class="'.$li_class.' item-month item-month-' . get_the_time('m') . '"><span class="bread-month bread-month-' . get_the_time('m') . '" title="' . get_the_time('M') . '">' . get_the_time('M') . ' Archives</span></li>';
-    
+      if (!empty($separator))
+        echo '<li class="' . $li_class . ' separator separator-' . get_the_time('Y') . '"> ' . $separator . ' </li>';
+
+      echo '<li class="' . $li_class . ' item-month item-month-' . get_the_time('m') . '"><span class="bread-month bread-month-' . get_the_time('m') . '" title="' . get_the_time('M') . '">' . get_the_time('M') . ' Archives</span></li>';
     } else if (is_year()) {
-      echo '<li class="'.$li_class.' item-current item-current-' . get_the_time('Y') . '"><span class="bread-current bread-current-' . get_the_time('Y') . '" title="' . get_the_time('Y') . '">' . get_the_time('Y') . ' Archives</span></li>';
-    
+      echo '<li class="' . $li_class . ' item-current item-current-' . get_the_time('Y') . '"><span class="bread-current bread-current-' . get_the_time('Y') . '" title="' . get_the_time('Y') . '">' . get_the_time('Y') . ' Archives</span></li>';
     } else if (is_author()) {
       // Autor
       // Get the author information
       global $author;
       $userdata = get_userdata($author);
 
-      echo '<li class="'.$li_class.' item-current item-current-' . $userdata->user_nicename . '"><span class="bread-current bread-current-' . $userdata->user_nicename . '" title="' . $userdata->display_name . '">' . 'Author: ' . $userdata->display_name . '</span></li>';
-    
+      echo '<li class="' . $li_class . ' item-current item-current-' . $userdata->user_nicename . '"><span class="bread-current bread-current-' . $userdata->user_nicename . '" title="' . $userdata->display_name . '">' . 'Author: ' . $userdata->display_name . '</span></li>';
     } else if (get_query_var('paged')) {
-      echo '<li class="'.$li_class.' item-current item-current-' . get_query_var('paged') . '"><span class="bread-current bread-current-' . get_query_var('paged') . '" title="' . __('Página', 'startertheme') . ' ' . get_query_var('paged') . '">' . __('Página', 'startertheme') . ' ' . get_query_var('paged') . '</span></li>';
-    
+      echo '<li class="' . $li_class . ' item-current item-current-' . get_query_var('paged') . '"><span class="bread-current bread-current-' . get_query_var('paged') . '" title="' . __('Página', 'startertheme') . ' ' . get_query_var('paged') . '">' . __('Página', 'startertheme') . ' ' . get_query_var('paged') . '</span></li>';
     } else if (is_search()) {
       // Página Search
-      echo '<li class="'.$li_class.' item-current item-current-' . get_search_query() . '"><span class="bread-current bread-current-' . get_search_query() . '" title="'.__('Resultado da pesquisa por', 'startertheme').': ' . get_search_query() . '">'.__('Resultado da pesquisa por', 'startertheme').': ' . get_search_query() . '</span></li>';
-    
+      echo '<li class="' . $li_class . ' item-current item-current-' . get_search_query() . '"><span class="bread-current bread-current-' . get_search_query() . '" title="' . __('Resultado da pesquisa por', 'startertheme') . ': ' . get_search_query() . '">' . __('Resultado da pesquisa por', 'startertheme') . ': ' . get_search_query() . '</span></li>';
     } elseif (is_404()) {
       // Pagina 404
-      echo '<li class="'.$li_class.'">' . __('Página não encontrada', 'startertheme') . '</li>';
+      echo '<li class="' . $li_class . '">' . __('Página não encontrada', 'startertheme') . '</li>';
     }
 
     echo '</ul>';
@@ -694,27 +691,30 @@ function custom_breadcrumbs() {
  * Comments
  * 
  */
-if ( WP_REMOVE_SUPPORT_COMMENTS !== false ) {
+if (WP_REMOVE_SUPPORT_COMMENTS !== false) {
   // Removes from admin menu
-  add_action( 'admin_menu', 'my_remove_admin_menus' );
-  function my_remove_admin_menus() {
-    remove_menu_page( 'edit-comments.php' );
+  add_action('admin_menu', 'my_remove_admin_menus');
+  function my_remove_admin_menus()
+  {
+    remove_menu_page('edit-comments.php');
   }
 
   // Removes from post and pages
   add_action('init', 'remove_comment_support', 100);
 
-  function remove_comment_support() {
-    remove_post_type_support( 'post', 'comments' );
-    remove_post_type_support( 'page', 'comments' );
+  function remove_comment_support()
+  {
+    remove_post_type_support('post', 'comments');
+    remove_post_type_support('page', 'comments');
   }
 
   // Removes from admin bar
-  function mytheme_admin_bar_render() {
+  function mytheme_admin_bar_render()
+  {
     global $wp_admin_bar;
     $wp_admin_bar->remove_menu('comments');
   }
-  add_action( 'wp_before_admin_bar_render', 'mytheme_admin_bar_render' );
+  add_action('wp_before_admin_bar_render', 'mytheme_admin_bar_render');
 }
 
 
@@ -723,7 +723,8 @@ if ( WP_REMOVE_SUPPORT_COMMENTS !== false ) {
  * 
  * @return mixed
  */
-function callback_custom_logo_setup() {
+function callback_custom_logo_setup()
+{
   $defaults = array(
     'height'               => 60,
     'width'                => 'auto',
@@ -738,12 +739,13 @@ function callback_custom_logo_setup() {
 
 add_action('after_setup_theme', 'callback_custom_logo_setup');
 
-function theme_logo_callback() {
-  $custom_logo_id = get_theme_mod( 'custom_logo' );
-  $logo           = wp_get_attachment_image_src( $custom_logo_id , 'full' );
-    
-  if ( has_custom_logo() ) {
-    echo '<img src="' . esc_url( $logo[0] ) . '" alt="Logo ' . get_bloginfo( 'name' ) . '">'; 
+function theme_logo_callback()
+{
+  $custom_logo_id = get_theme_mod('custom_logo');
+  $logo           = wp_get_attachment_image_src($custom_logo_id, 'full');
+
+  if (has_custom_logo()) {
+    echo '<img src="' . esc_url($logo[0]) . '" alt="Logo ' . get_bloginfo('name') . '">';
   }
 }
 
@@ -756,13 +758,14 @@ add_filter('logo_tema', 'theme_logo_callback', 10);
  *
  * @return string
  */
-function back_page_of_history() {
+function back_page_of_history()
+{
   $previous = "javascript:history.go(-1)";
-  
-  if ( isset($_SERVER['HTTP_REFERER']) ) {
+
+  if (isset($_SERVER['HTTP_REFERER'])) {
     $previous = $_SERVER['HTTP_REFERER'];
   } else {
-	  $previous = get_home_url('/');
+    $previous = get_home_url('/');
   }
 
   return $previous;
@@ -772,19 +775,20 @@ function back_page_of_history() {
 /**
  * Data de publicação e modificação do post
  */
-function published_modified_date() {
-	$date        = get_the_date( 'U' );
-	$updated     = get_the_modified_date( 'U' );
+function published_modified_date()
+{
+  $date        = get_the_date('U');
+  $updated     = get_the_modified_date('U');
   $date_format = get_bloginfo('language') == 'pt-BR' ? 'd M Y, \à\s H:i' : 'M d, Y, \a\t H:i:s';
   $utf_format  = 'Y-m-d\TH:i:s\Z';
 
-  $output = '<time itemprop="datePublished" putdate datetime="'.get_the_date($utf_format).'" class="entry-date"><span>'. __('Publicado em', 'startertheme') .'</span> ' . get_the_date( $date_format ) . '</time>';
+  $output = '<time itemprop="datePublished" putdate datetime="' . get_the_date($utf_format) . '" class="entry-date"><span>' . __('Publicado em', 'startertheme') . '</span> ' . get_the_date($date_format) . '</time>';
 
-	if ( $updated > ( $date + 86400 ) ) {
+  if ($updated > ($date + 86400)) {
     $output .= '<span class="mx-2 fw-bold">·</span>';
-    $output .= '<time itemprop="dateModified" datetime="'.get_the_modified_date($utf_format).'" class="entry-date-modified"><span>'. __('Atualizado em', 'startertheme') .'</span> ' . get_the_modified_date( $date_format ) . '</time>';
+    $output .= '<time itemprop="dateModified" datetime="' . get_the_modified_date($utf_format) . '" class="entry-date-modified"><span>' . __('Atualizado em', 'startertheme') . '</span> ' . get_the_modified_date($date_format) . '</time>';
   }
-  
-	return $output;
+
+  return $output;
 }
-add_shortcode( 'published_modified_date', 'published_modified_date' );
+add_shortcode('published_modified_date', 'published_modified_date');

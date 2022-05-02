@@ -775,20 +775,20 @@ function back_page_of_history()
 /**
  * Data de publicação e modificação do post
  */
-function published_modified_date()
-{
-  $date        = get_the_date('U');
-  $updated     = get_the_modified_date('U');
-  $date_format = get_bloginfo('language') == 'pt-BR' ? 'd M Y, \à\s H:i' : 'M d, Y, \a\t H:i:s';
+function published_modified_date() {
+	$date        = get_the_date( 'U' );
+	$updated     = get_the_modified_date( 'U' );
+  $date_format = get_bloginfo('language') == 'pt-BR' ? 'd/m/y, \à\s H:i' : 'm/d/y, \a\t H:i:s';
   $utf_format  = 'Y-m-d\TH:i:s\Z';
 
-  $output = '<time itemprop="datePublished" putdate datetime="' . get_the_date($utf_format) . '" class="entry-date"><span>' . __('Publicado em', 'startertheme') . '</span> ' . get_the_date($date_format) . '</time>';
+  $output = '<i class="fal fa-calendar-alt me-2"></i>';
+  $output .= '<time itemprop="datePublished" putdate datetime="'.get_the_date($utf_format).'" class="entry-date"><span>'. __('Publicado em', 'startertheme') .'</span> ' . get_the_date( $date_format ) . '</time>';
 
-  if ($updated > ($date + 86400)) {
+	if ( $updated > ( $date + 86400 ) ) {
     $output .= '<span class="mx-2 fw-bold">·</span>';
-    $output .= '<time itemprop="dateModified" datetime="' . get_the_modified_date($utf_format) . '" class="entry-date-modified"><span>' . __('Atualizado em', 'startertheme') . '</span> ' . get_the_modified_date($date_format) . '</time>';
+    $output .= '<time itemprop="dateModified" datetime="'.get_the_modified_date($utf_format).'" class="entry-date-modified"><span>'. __('Atualizado em', 'startertheme') .'</span> ' . get_the_modified_date( $date_format ) . '</time>';
   }
-
-  return $output;
+  
+	return $output;
 }
-add_shortcode('published_modified_date', 'published_modified_date');
+add_shortcode( 'published_modified_date', 'published_modified_date' );

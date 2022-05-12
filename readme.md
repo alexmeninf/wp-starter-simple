@@ -1,4 +1,4 @@
-# WP Starter Theme Simple v1.1
+# WP Starter Theme Simple
 
 Author: Alexandre Menin
 GitHub Plugin URI: [https://github.com/alexmeninf/wp-starter-simple]( "https://github.com/alexmeninf/wp-starter-simple")

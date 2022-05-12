@@ -18,9 +18,6 @@ define('THEME_ENABLE_NAVBAR', true);
 // Gerar meta preload na requisição das fontes do tema
 define('THEME_ENABLE_PRELOAD_FONT', false);
 
-// Remover suporte e aba de comentários no painel do admin
-define('WP_REMOVE_SUPPORT_COMMENTS', true);
-
 
 /**
  * Require functions
